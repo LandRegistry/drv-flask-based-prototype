@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  <div class="inner-block">
+
+    <h1 class="heading-large">Digital Register Login</h1>
+
+    {% if service_notice_html %}
+      <div class="service-notice expand-bottom">
+        {{ service_notice_html | safe }}
+      </div>
+    {% endif %}
+
+    <form action="{{ url_for('sign_in') }}" method="post" class="form">
+      {{ form.hidden_tag() }}
+      {% if form.errors %}
+        <div class="error-summary" role="group" aria-labelledby="error-summary-heading-example-1" tabindex="-1">
+          <h1 class="heading-medium error-summary-heading" id="error-summary-heading-example-1">
+            There was a problem submitting the form
+          </h1>
+          <ul class="error-summary-list">
+            {% for field, messages in form.errors.items() %}
+              {% for message in messages %}
+                <li>
+                  <a href="#{{ field }}">{{ message }}</a>
+                </li>
+              {% endfor %}
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+      {% if unauthorised_title %}
+        <div class="error-summary" role="group" aria-labelledby="error-summary-heading-example-1" tabindex="-1">
+          <h1 class="heading-medium error-summary-heading" id="error-summary-heading-example-1">
+            {{ unauthorised_title }}
+          </h1>
+          <p>{{ unauthorised_description }}</p>
+        </div>
+      {% endif %}
+      <div class="form-group {% if form.username.errors %}error{% else %}expand-top-half{% endif %}">
+        <label for="username" class="form-label-bold">Username</label>
+        {% if form.username.errors %}
+          {% for message in form.username.errors %}
+            <span class="error-message">
+              {{ message }}
+            </span>
+          {% endfor %}
+        {% endif %}
+        <input type="text" class="form-control" id="username" name="username" required pattern=".{4,70}" title="Username must contain at least 4 and at most 70 characters" autofocus="autofocus">
+      </div>
+
+      <div class="form-group{% if form.password.errors %} error{% endif %}">
+        <label for="password" class="form-label-bold">Password</label>
+        {% if form.password.errors %}
+          {% for message in form.password.errors %}
+            <span class="error-message">
+              {{ message }}
+            </span>
+          {% endfor %}
+        {% endif %}
+        <input type="password" class="form-control" id="password" name="password" required>
+      </div>
+
+      <div class="form-group">
+        <button type="submit" class="button" id="signin">Sign In</button>
+      </div>
+
+    </form>
+  </div>
+{% endblock %}

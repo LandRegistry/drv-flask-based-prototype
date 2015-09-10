@@ -1,0 +1,136 @@
+{% extends "imports.html" %}
+
+{% block body %}
+  {% if is_caution_title %}
+    <span class="alert-flag-hi-viz">Caution against first registration</span>
+    <br>
+  {% endif %}
+  <h1 class="heading-xlarge collapse-bottom">Summary of {% if is_caution_title %}caution {% endif %}title {{ title.number }}</h1>
+  <p class="expand-bottom">This title was last changed on <b>{{ title.last_changed | date }}</b> at <b>{{ title.last_changed | time }}</b></p>
+
+  <div class="grid-row">
+
+    <div class="column-two-thirds">
+
+      <p class="lede collapse-top">
+        {% if title.address_lines %}
+          {{ '<br>'.join(title.address_lines)|safe }}
+        {% else %}
+          Not Available
+        {% endif %}
+      </p>
+
+      <div id="map">
+        <div class="panel-simple">
+          <p>The map relies on JavaScript being enabled in your browser.</p>
+        </div>
+      </div>
+
+      <dl class="definition-tabular expand-top-half">
+        <dt>{% if is_caution_title %}Cautioner{% else %}Owner{% endif %}{{ title.proprietors|length|pluralize }}</dt>
+        <dd>
+          {% for proprietor in title.proprietors %}
+            <h5 class="expand-bottom-half {% if loop.index != 1 %} expand-top-half {% endif %}">
+              <span class="heading-small">{{ proprietor.name }}</span>{{ proprietor.name_extra_info }}
+            </h5>
+            {% if proprietor.co_reg_no %}
+              <div>{{ proprietor.co_reg_no }}</div>
+              {% if proprietor.company_location %}
+                <div>{{ proprietor.company_location }}</div>
+              {% endif %}
+            {% endif %}
+            {% for address in proprietor.addresses %}
+              <div>{{ '<br>'.join(address.lines)|safe }}</div>
+            {% endfor %}
+          {% endfor %}
+        </dd>
+        {% if title.lenders %}
+          <dt>Lender{{ title.lenders|length|pluralize }}</dt>
+          <dd>
+            {% for lender in title.lenders %}
+              <h5 class="expand-bottom-half {% if loop.index != 1 %} expand-top-half {% endif %}">
+                <span class="heading-small">{{ lender.name }}</span>{{ lender.name_extra_info }}
+              </h5>
+              {% if lender.co_reg_no %}
+                <div>{{ lender.co_reg_no }}</div>
+              {% endif %}
+              {% if lender.company_location %}
+                <div>{{ lender.company_location }}</div>
+              {% endif %}
+              {% for address in lender.addresses %}
+                <div>{{ '<br>'.join(address.lines)|safe }}</div>
+              {% endfor %}
+            {% endfor %}
+          </dd>
+        {% endif %}
+
+        {% if not is_caution_title %}
+          <dt>Tenure type</dt>
+          <dd><b>{{ title.tenure }}</b></dd>
+        {% endif %}
+
+        {% if title.ppi_data %}
+          <dt>Price paid/stated</dt>
+          <dd><b>{{ title.ppi_data }}</b></dd>
+        {% endif %}
+      </dl>
+
+    </div>
+
+    <div class="column-third">
+
+      <div class="printhidden panel-simple">
+        <span class="print-page"></span>
+      </div>
+
+      {% if show_pdf %}
+        <div class="download-documents js-stick-at-top-when-scrolling">
+          <div class="document-item">
+            <a href="{{ url_for('display_title_pdf', title_number=title.number) }}" class="image">
+              <img src="/static/images/icon-register-document.png">
+            </a>
+            <span class="title">{% if is_caution_title %}Caution title register{% else %}Title register{% endif %}</span><br>
+            <span class="footnote">{% if is_caution_title %}Caution title {% endif %}PDF document</span>
+            <p>
+              <a class="button" id="download-link" style="vertical-align: baseline;" href="{{ url_for('display_title_pdf', title_number=title.number) }}" target="_blank"><b>Download</b></a>
+            </p>
+          </div>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+
+  {% if full_title_data %}
+    <div class="service-notice expand-bottom">
+      {% include 'display_full_title_details.html' %}
+    </div>
+  {% endif %}
+
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      <div class="text printhidden">
+        <h6 class="heading-medium">What next</h6>
+        <ul>
+          <li><a href="/title-search">Search for another title using this service</a></li>
+          <li><a href="https://gov.uk">Return to GOV.UK</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block js_bottom %}
+  <script type='text/javascript'>
+    var indexData = {{ title.indexPolygon | tojson }}
+  </script>
+  <script type='text/javascript'>
+    $(function() {
+      // stop the position:fixed subnav rolling into footer
+      GOVUK.stickAtTopWhenScrolling.init();
+      GOVUK.stopScrollingAtFooter.addEl($('.js-stick-at-top-when-scrolling'), $('.js-stick-at-top-when-scrolling').height());
+    });
+  </script>
+  <script src="/static/javascripts/map.js"></script>
+{% endblock %}

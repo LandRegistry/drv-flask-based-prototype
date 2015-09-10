@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  <div class="outer-block">
+    <div class="inner-block">
+      <form action="{{ url_for('find_titles') }}" method="post" role="form">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+          <div class="text">
+            <h1 class="heading-xlarge form-title">Search the land and property register</h1>
+            <p class="lede"><label for="search_term">You can get information about registered property or land in England and Wales, even if you don’t own it.</label></p>
+          </div>
+          <p class="form-hint">For example a postcode, street name or title number</p>
+          <input type="text" class="form-control" name="search_term" id="search_term" required autofocus="autofocus">
+        </div>
+        <div class="form-group">
+          <input id="search_button" type="submit" value="Search" class="button">
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block js_bottom %}
+  <script src="/static/javascripts/ga_search.js"></script>
+{% endblock %}

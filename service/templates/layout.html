@@ -1,0 +1,74 @@
+{% set asset_path = '/static/govuk_template/' %}
+
+{% extends "govuk_template.html" %}
+
+{% block head %}
+  <!-- Land Registry styleguide css -->
+  {% assets "styleguide" %}<!--[if gt IE 8]><!--><link href="{{ ASSET_URL }}" media="screen" rel="stylesheet" type="text/css" /><!--<![endif]-->{% endassets %}
+  {% assets "styleguide_ie8" %}<!--[if IE 8]><link href="{{ ASSET_URL }}" media="screen" rel="stylesheet" type="text/css" /><![endif]-->{% endassets %}
+  {% assets "styleguide_ie7" %}<!--[if IE 7]><link href="{{ ASSET_URL }}" media="screen" rel="stylesheet" type="text/css" /><![endif]-->{% endassets %}
+  {% assets "styleguide_ie6" %}<!--[if IE 6]><link href="{{ ASSET_URL }}" media="screen" rel="stylesheet" type="text/css" /><![endif]-->{% endassets %}
+  {% assets "print" %}<link href="{{ ASSET_URL }}" media="print" rel="stylesheet" type="text/css" />{% endassets %}
+  {% assets "beta" %}<link href="{{ ASSET_URL }}" media="screen" rel="stylesheet" type="text/css" />{% endassets %}
+  <!-- Google Analytics -->
+  <script type="text/javascript">
+    var googleAnalyticsApiKey = '{{ google_api_key }}';
+  </script>
+  <script src="/static/javascripts/googleanalytics.js"></script>
+  <!-- Consumable assets -->
+  {% assets "styleguide_js" %}<script type="text/javascript" src="{{ ASSET_URL }}"></script>{% endassets %}
+  {% block head_additionals %}{% endblock %}
+  {% block js_additionals %}{% endblock %}
+{% endblock %}
+
+{% block cookie_message %}
+  <p>Land Registry uses cookies to make the site simpler. <a href="/cookies">Find out more about cookies</a></p>
+{% endblock %}
+
+{% block content %}
+
+  <main id="content" role="main">
+    <div class="phase-banner">
+      <p>
+        <strong class="phase-tag">BETA</strong>
+        <span>This service is in private beta. Please give us your <a rel="external" href="mailto:digital-register-feedback@digital.landregistry.gov.uk">Feedback</a>.</span>
+      </p>
+    </div>
+    <div class="grid-row">
+      {% if breadcrumbs %}
+        <div class="column-two-thirds">
+          <div class="global-breadcrumb">
+            <nav role="navigation">
+              <ol>
+                {% for breadcrumb in breadcrumbs %}
+                  {% if breadcrumb['url'] %}
+                    <li><a href="{{ breadcrumb['url'] }}">{{ breadcrumb['text'] }}</a></li>
+                  {% endif %}
+                  {% if breadcrumb['current'] %}
+                    <li><strong>{{ breadcrumb['current'] }}</strong></li>
+                  {% endif %}
+                {% endfor %}
+              </ol>
+            </nav>
+          </div>
+        </div>
+      {% endif %}
+      <div class="column-quarter column-flip">
+        <div class="account">
+          {% if username %}
+            <a href="{{ url_for('sign_out') }}" id="signout">Sign out</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% block body %}{% endblock %}
+    {% block js_bottom %}{% endblock %}
+  </main>
+{% endblock %}
+
+{% block footer_support_links %}
+  <ul>
+    <li><a href="/cookies">Cookies</a></li>
+    <li>Built by <a href="https://www.gov.uk/government/organisations/land-registry">Land Registry</a></li>
+  </ul>
+{% endblock %}
