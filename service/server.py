@@ -174,8 +174,8 @@ def _login_page(form=None, show_unauthorised_message=False, next_url=None):
         form=form,
         username=USERNAME,
         service_notice_html=app.config.get('SERVICE_NOTICE_HTML', None),
-        unauthorised_title=UNAUTHORISED_TITLE if show_unauthorised_message else None,
-        unauthorised_description=UNAUTHORISED_WORDING if show_unauthorised_message else None,
+        unauthorised_title=None,
+        unauthorised_description=None,
         next=next_url,
     )
 

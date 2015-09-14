@@ -3,6 +3,7 @@ from service.fake_api_results import ALL_TITLES, OFFICIAL_COPY_RESULT, TITLE_RES
 
 SEARCH_RESULTS_PER_PAGE = 20
 
+
 def get_title(title_number):
     return TITLE_RESULT
 
@@ -18,6 +19,7 @@ def _get_titles(page_number):
         'page_number': page_number,
         'titles': ALL_TITLES[start_index:end_index],
     }
+
 
 def get_titles_by_postcode(postcode, page_number):
     return _get_titles(page_number)
