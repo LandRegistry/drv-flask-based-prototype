@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+  {% set display_page_number = results.get('page_number', 0) + 1 %}
+
+  <form class="form" action="{{ url_for('find_titles') }}" method="post" role="form">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+      <h1 class="heading-medium">
+        <label for="search_term">
+          Search results for <span class="visuallyhidden">{% if search_term %}{{ search_term }}{% endif %}</span>
+        </label>
+      </h1>
+      <input type="text" class="form-control" name="search_term" id="search_term" value="{% if search_term %}{{ search_term }}{% endif %}"  autofocus="autofocus">
+      <input type="submit" value="Search" class="button search-button">
+    </div>
+  </form>
+
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      <h2 class="font-xsmall expand-bottom-half">{{ results['number_results'] }} result{{ results['number_results']|pluralize }} found</h2>
+      <ol class="search-results-listing">
+        {% for title in results['titles'] %}
+          <li>
+            <h2 class="heading-small">
+              <a href="{{ url_for('get_title', title_number=title['title_number'], page=display_page_number, search_term=search_term) }}">{{ title['data']['address']['address_string'] }}</a>
+            </h2>
+            <div class="font-xsmall">
+                {% if title['data'].get('is_caution_title') %}Caution title {% else %}Title {% endif %} number {{ title['title_number'] }}<br>
+              <b>{{ title | tenure_info }}</b>
+            </div>
+          </li>
+        {% endfor %}
+      </ol>
+
+      {% if results['number_pages'] %}
+        <div class="pagination-prev-next">
+          {% if display_page_number > 1 or display_page_number < results['number_pages'] %}
+            <ul>
+              {% if display_page_number > 1 %}
+                <li class="previous-page">
+                  <a href="{{ url_for('find_titles', search_term=search_term, page=display_page_number - 1) }}">
+                    <span class="pagination-label">Previous <span class="visuallyhidden">page</span></span>
+                  </a>
+                </li>
+              {% endif %}
+              {% if display_page_number < results['number_pages'] %}
+                <li class="next-page">
+                  <a href="{{ url_for('find_titles', search_term=search_term, page=display_page_number + 1) }}">
+                    <span class="pagination-label">Next <span class="visuallyhidden">page</span></span>
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          {% endif %}
+        </div>
+        <div id="pagination" style="text-align: center">Page {{ display_page_number }} of {{ results['number_pages'] }}</div>
+      {% endif %}
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block js_bottom %}
+  <script type="text/javascript">
+    number_results = {{ results['titles']|length }};
+    page_number = {{ display_page_number or 0 }};
+  </script>
+  <script src="/static/javascripts/ga_search_results.js"></script>
+{% endblock %}

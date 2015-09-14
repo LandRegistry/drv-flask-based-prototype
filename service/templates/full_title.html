@@ -1,0 +1,228 @@
+<html lang="en">
+  <head>
+    <style type="text/css">
+      @page {
+        size: A4 portrait;
+        margin: 10mm 10mm 15mm 10mm;
+        @bottom-right {
+          content: "Page " counter(page) " of " counter(pages);
+          font-family: 'GDSTransportWebsite';
+          font-size: 8pt;
+          color: silver;
+          border-top: 1pt solid silver;
+        }
+      }
+      body {
+        font-family: 'GDSTransportWebsite';
+      }
+      .register-title {
+        font-size: 32pt;
+        margin: 0;
+      }
+      h2 {
+        margin: 0;
+      }
+
+      /* "Cover sheet" area */
+      #cover {
+        margin: 10mm 0;
+        padding-left: 4mm;
+        border-left: 2pt solid black;
+      }
+      #cover .fleft p:first-child {
+        margin-top: 0;
+      }
+      #cover .fleft p:last-child {
+        margin-bottom: 0;
+      }
+      #crown {
+        width: 30mm;
+        height: 30mm;
+        margin-left: 8mm;
+        float: left;
+      }
+
+      /* Sub registers */
+      .sub-register-description {
+        position: relative;
+        width: 100%;
+        margin: 12mm 0 4mm 0;
+        padding-left: 9mm;
+      }
+        .sub-register-description h3,
+        .sub-register-description p {
+          margin: 0;
+        }
+        .sub-register-description [class*='register-']:before {
+          content: ' ';
+          position: absolute;
+          left: 0;
+          color: white;
+          text-align: center;
+          width: 1.27em;
+          height: 1.27em;
+          margin-right: 1mm;
+          border-radius: 100%;
+          background-color: black;
+        }
+        .sub-register-description .register-a:before {
+          content: 'A';
+        }
+        .sub-register-description .register-b:before {
+          content: 'B';
+        }
+        .sub-register-description .register-c:before {
+          content: 'C';
+        }
+
+      /* register entries */
+      .register-entry {
+        width: 100%;
+        position: relative;
+        margin-bottom: 4mm;
+      }
+        .register-entry .entry-date {
+          font-size: 10pt;
+          color: gray;
+          margin-left: 9mm;
+        }
+        .register-entry h4 {
+          position: absolute;
+          left: 0;
+          top: 0;
+          font-weight: 800;
+          width: 9mm;
+          margin: 0;
+        }
+        .register-entry h4.shunt {
+          top: 14pt;
+        }
+        .register-entry .entry {
+          width: 130mm;
+          margin-left: 9mm;
+        }
+        .register-entry .entry p:first-of-type {
+          margin-top: 0;
+        }
+
+      /* Helper classes */
+      [class*='copy-'] {
+        font-weight: 400;
+      }
+      .copy-10 {
+        font-size: 10pt;
+      }
+      .copy-14 {
+        font-size: 14pt;
+      }
+      .copy-18 {
+        font-size: 18pt;
+      }
+
+      .text-80 {
+        width: 80mm;
+      }
+      .text-90 {
+        width: 90mm;
+      }
+
+      .block {
+        display: block;
+      }
+      .fleft {
+        float: left;
+      }
+      .fright {
+        float: right;
+      }
+      .group:after {
+      	visibility: hidden;
+      	display: block;
+      	content: "";
+      	clear: both;
+      	height: 0;
+    	}
+    </style>
+
+
+  </head>
+
+  <body>
+
+    <h1 class="register-title">
+      <span class="copy-18 block">Register of title</span>
+      Title Number: {{ title_number }}
+    </h1>
+    <h2 class="copy-14">Issued on: {{ issued_date }}</h2>
+
+    <div id="cover" class="group">
+      <div class="text-90 copy-10 fleft">
+        <p>
+          This copy shows the entries on the register of title on<br>
+          {{ last_entry_date }}
+        </p>
+        <p>
+          This date must be quoted as the “search from date” in any official
+          search application based on this copy.
+        </p>
+        <p>
+          Edition Date {{ edition_date }}
+        </p>
+        <p>
+          The date at the beginning of an entry is the date on which the entry
+          was made in the register.
+        </p>
+      </div>
+      <img id="crown" src="{{ url_for('static', filename='images/crown.svg') }}">
+    </div>
+
+    {% for sub_register in sub_registers %}
+
+      {% if sub_register['sub_register_name'] == 'A' %}
+        <div class="sub-register-description">
+          <h3 class="register-a">Property register</h3>
+          <p class="text-80 copy-10">
+            Describes the land and estate comprised in the title.
+            {% if sub_register['tenure'] == 'Leasehold' %}
+              Except as mentioned below, the title includes any legal easements
+              granted by the registered lease but is subject to any rights that
+              it reserves, so far as those easements and rights exist and
+              benefit or affect theregistered land.
+            {% endif %}
+          </p>
+        </div>
+      {% elif sub_register['sub_register_name'] == 'B' %}
+        <div class="sub-register-description">
+          <h3 class="register-b">Proprietorship register</h3>
+          <p class="text-80 copy-10">
+            Specifies the class of title and identifies the owner. It contains
+            any entries that affect the right of disposal.
+          </p>
+        </div>
+      {% elif sub_register['sub_register_name'] == 'C' %}
+        <div class="sub-register-description">
+          <h3 class="register-c">Charges register</h3>
+          <p class="text-80 copy-10">
+            Contains any charges and other matters that affect the land.
+          </p>
+        </div>
+      {% else %}
+        <div class="sub-register-description">
+          <h3>{{ sub_register['sub_register_name'] }}</h3>
+        </div>
+      {% endif %}
+
+      {% for entry in sub_register['entries'] %}
+        <div class="register-entry group">
+          {% if 'entry_date' in entry %}<div class="entry-date">{{ entry['entry_date'] }}</div>{% endif %}
+          <div class="entry">
+            <h4{% if 'entry_date' in entry %} class="shunt"{% endif %}>{{ entry['sequence_number'] }}:</h4>
+            <p>{{ entry['full_text'] }}</p>
+          </div>
+        <div>
+      {% endfor %}
+
+    {% endfor %}
+
+  </body>
+</html>
