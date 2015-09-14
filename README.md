@@ -2,6 +2,16 @@
 
 This repo stores prototypes of the Digital Register View. It is based on digital-register-frontend, and just like that project is written in Python and uses the Flask framework. The intention is that by staying close to digital-register-frontend we will be able to quickly copy features that have been tested by User Research back in to the real app.
 
+## Cloning specific versions
+
+Previous versions of the prototype used different directories for each version. We think it's better to use different branches in Git for each version.
+
+If you need to get different versions of the prototype you can use the following command to clone a version branch into a directory with the same name. This command gets version 11 ("v11"):
+
+```
+    git clone git@github.com:LandRegistry/drv-flask-based-prototype.git v11 -b v11
+```
+
 ## Setup
 
 To create a virtual env, run the following from a shell:
