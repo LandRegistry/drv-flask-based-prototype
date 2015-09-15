@@ -1,9 +1,7 @@
 from datetime import datetime                                                                          # type: ignore
 from flask import abort, make_response, Markup, redirect, render_template, request, Response, url_for  # type: ignore
 from flask_weasyprint import HTML, render_pdf                                                          # type: ignore
-import json
 import re
-import time
 
 from service import address_utils, api_client, app, title_formatter, title_utils
 from service.forms import TitleSearchForm, SigninForm
