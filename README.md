@@ -9,7 +9,7 @@ Previous versions of the prototype used different directories for each version. 
 If you need to get different versions of the prototype you can use the following command to clone a version branch into a directory with the same name. This command gets version 11 ("v11"):
 
 ```
-    git clone git@github.com:LandRegistry/drv-flask-based-prototype.git v11 -b v11
+    git clone --recursive git@github.com:LandRegistry/drv-flask-based-prototype.git v11 -b v11
 ```
 
 ## Setup
