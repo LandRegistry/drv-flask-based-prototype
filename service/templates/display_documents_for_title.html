@@ -17,7 +17,7 @@
           <a href="{{ url_for('display_title_pdf', title_number=title.number) }}" class="image">
             <img src="/static/images/icon-register-document.png">
           </a>
-          <span class="title">{% if is_caution_title %}Caution title register{% else %}Title register{% endif %}</span><br>
+          <span class="title">{% for product in products %}{{ product.name }}{% if not loop.last %}, {% endif %}{% endfor %}</span><br>
           <span class="footnote">{% if is_caution_title %}Caution title {% endif %}PDF document</span>
           <p>
             <a class="button" id="download-link" style="vertical-align: baseline;" href="{{ url_for('display_title_pdf', title_number=title.number) }}" target="_blank"><b>Download</b></a>

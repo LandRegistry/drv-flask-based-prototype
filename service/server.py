@@ -417,9 +417,9 @@ def payment_details():
         if show_form:
             product_keys = sorted(session['products'])
             product_info = {
-                'summary': {'name': 'summary view', 'price': 1},
-                'title_plan': {'name': 'title plan', 'price': 3},
-                'title_register': {'name': 'title register', 'price': 3},
+                'summary': {'name': 'Summary view', 'price': 1},
+                'title_plan': {'name': 'Title plan', 'price': 3},
+                'title_register': {'name': 'Title register', 'price': 3},
             }
             products = [product_info[product_key] for product_key in product_keys if product_key in product_info]
             total = sum([product['price'] for product in products])
@@ -452,9 +452,17 @@ def documents_for_title(title_number):
         search_term = request.args.get('search_term', title_number)
         breadcrumbs = _breadcumbs_for_title_details(title_number, search_term, display_page_number)
 
+        product_keys = sorted(session['products'])
+        product_info = {
+            'title_plan': {'name': 'Title plan'},
+            'title_register': {'name': 'Title register'},
+        }
+        products = [product_info[product_key] for product_key in product_keys if product_key in product_info]
+
         return render_template(
             'display_documents_for_title.html',
             title=title,
+            products=products,
             username=USERNAME,
             search_term=search_term,
             breadcrumbs=breadcrumbs,
