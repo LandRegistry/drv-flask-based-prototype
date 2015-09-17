@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% from "_formhelpers.html" import render_field %}
+
+{% block body %}
+  <div class="inner-block">
+
+    <h1 class="heading-large">Create account</h1>
+
+    {% if form.errors %}
+      <h1 class="heading-medium error-summary-heading">
+        There was a problem submitting the form
+      </h1>
+    {% endif %}
+    <form action="{{ url_for('account_details', title_number=title_number, page=display_page_number, search_term=search_term) }}" method="post">
+      <dl>
+        {{ render_field(form.name) }}
+        {{ render_field(form.business_name) }}
+        {{ render_field(form.telephone_number) }}
+        {{ render_field(form.address_line_1) }}
+        {{ render_field(form.address_line_2) }}
+        {{ render_field(form.address_line_3) }}
+        {{ render_field(form.address_line_4) }}
+        {{ render_field(form.address_line_5) }}
+        {{ render_field(form.address_line_6) }}
+      </dl>
+      <input type="submit" value="Continue" class="button">
+    </form>
+
+  </div>
+{% endblock %}

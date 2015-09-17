@@ -1,0 +1,72 @@
+{% extends "imports.html" %}
+
+{% block body %}
+  {% if is_caution_title %}
+    <span class="alert-flag-hi-viz">Caution against first registration</span>
+    <br>
+  {% endif %}
+
+  <div class="grid-row">
+
+    <div class="column-two-thirds">
+
+      <div id="map">
+        <div class="panel-simple">
+          <p>The map relies on JavaScript being enabled in your browser.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="column-third">
+      {% if title.address_lines %}
+        <h1 class="heading-xlarge collapse-bottom">{{ title.address_lines[0] }}</h1>
+        <p class="lede collapse-top">
+          {{ '<br>'.join(title.address_lines[1:])|safe }}
+        </p>
+      {% else %}
+        <h1>No recorded address for this title</h1>
+      {% endif %}
+
+
+      <dl class="definition-tabular expand-top-half">
+        {% if not is_caution_title %}
+          <dt>Tenure type</dt>
+          <dd><b>{{ title.tenure }}</b></dd>
+        {% endif %}
+
+        <dt>Title number</dt>
+        <dd><b>{{ title.number }}</b></dd>
+      </dl>
+
+      <p class="heading-medium">How would you like to view this information?</p>
+      <form action="{{ url_for('chosen_summary_or_documents', title_number=title.number, page=display_page_number, search_term=search_term) }}" method="post">
+        <div>
+          <input type="checkbox" name="summary_or_documents" value="summary"> Summary view - £1.00
+        </div>
+        <div>
+          <input type="checkbox" name="summary_or_documents" value="documents"> Title documents - £3.00 per document
+        </div>
+        <div>
+          <input type="submit" value="Next" class="button">
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+{% endblock %}
+
+{% block js_bottom %}
+  <script type='text/javascript'>
+    var indexData = {{ title.indexPolygon | tojson }}
+  </script>
+  <script type='text/javascript'>
+    $(function() {
+      // stop the position:fixed subnav rolling into footer
+      GOVUK.stickAtTopWhenScrolling.init();
+      GOVUK.stopScrollingAtFooter.addEl($('.js-stick-at-top-when-scrolling'), $('.js-stick-at-top-when-scrolling').height());
+    });
+  </script>
+  <script src="/static/javascripts/map.js"></script>
+{% endblock %}

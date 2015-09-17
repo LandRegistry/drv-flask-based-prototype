@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+{% from "_formhelpers.html" import render_field %}
+
+{% block body %}
+  <div class="grid-row">
+
+    <div class="column-two-thirds">
+      <h1 class="heading-large">Purchase {% for product in products %}{{ product.name }}{% if not loop.last %}, {% endif %}{% endfor %}</h1>
+
+      {% if form.errors %}
+        <h1 class="heading-medium error-summary-heading">
+          There was a problem submitting the form
+        </h1>
+      {% endif %}
+      <form action="{{ url_for('payment_details', title_number=title.number, page=display_page_number, search_term=search_term) }}" method="post">
+        <dl>
+          {{ render_field(form.full_name) }}
+          {{ render_field(form.card_number) }}
+          {{ render_field(form.card_security_code) }}
+          {{ render_field(form.expiry_month) }}
+          {{ render_field(form.expiry_year) }}
+          {{ render_field(form.building_and_street_1) }}
+          {{ render_field(form.building_and_street_2) }}
+          {{ render_field(form.town) }}
+          {{ render_field(form.county) }}
+          {{ render_field(form.postcode) }}
+          {{ render_field(form.email) }}
+        </dl>
+        <input type="submit" value="Pay now" class="button">
+      </form>
+    </div>
+
+    <div class="column-third">
+      <div class="panel-simple">
+        <div>
+          <p>
+            <strong>Payment summary</strong>
+          </p>
+        </div>
+        <div>
+          <p>
+            Title number<br/>
+            {{ title.number }}
+          </p>
+        </div>
+        <div>
+          <p>{{ '<br>'.join(title.address_lines)|safe }}</p>
+        </div>
+        {% if not is_caution_title %}
+          <div>
+            <p>{{ title.tenure }}</p>
+          </div>
+        {% endif %}
+        <table>
+          {% for product in products %}
+            <tr>
+              <td>{{ product.name }}</td><td><strong>£{{ product.price }}.00</strong></td>
+            </tr>
+          {% endfor %}
+          <tr>
+            <td>Total to pay</td><td><strong>£{{ total }}.00</strong></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+  </div>
+{% endblock %}
