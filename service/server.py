@@ -9,7 +9,7 @@ from service.forms import TitleSearchForm, SigninForm
 TITLE_NUMBER_REGEX = re.compile('^([A-Z]{0,3}[1-9][0-9]{0,5}|[0-9]{1,6}[ZT])$')
 POSTCODE_REGEX = re.compile(address_utils.BASIC_POSTCODE_REGEX)
 
-USERNAME = 'Fred Smith'
+USERNAME = 'Darcy Bloggs'
 
 
 @app.route('/login', methods=['GET'])

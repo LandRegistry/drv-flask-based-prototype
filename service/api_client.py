@@ -1,11 +1,11 @@
 import math
-from service.fake_api_results import ALL_TITLES, OFFICIAL_COPY_RESULT, TITLE_RESULT
+from service.fake_api_results import ALL_TITLES, OFFICIAL_COPY_RESULT, SELECTED_FULL_RESULTS
 
 SEARCH_RESULTS_PER_PAGE = 20
 
 
 def get_title(title_number):
-    return TITLE_RESULT
+    return SELECTED_FULL_RESULTS.get(title_number)
 
 
 def _get_titles(page_number):
