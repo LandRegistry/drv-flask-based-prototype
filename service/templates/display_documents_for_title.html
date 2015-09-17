@@ -1,0 +1,68 @@
+{% extends "imports.html" %}
+
+{% block body %}
+  {% if is_caution_title %}
+    <span class="alert-flag-hi-viz">Caution against first registration</span>
+    <br>
+  {% endif %}
+  <h1 class="heading-xlarge collapse-bottom">Documents for {% if is_caution_title %}caution {% endif %}title {{ title.number }}</h1>
+  <p class="expand-bottom">This title was last changed on <b>{{ title.last_changed | date }}</b> at <b>{{ title.last_changed | time }}</b></p>
+
+  <div class="grid-row">
+
+    <div class="column-two-thirds">
+
+      <div class="download-documents">
+        <div class="document-item">
+          <a href="{{ url_for('display_title_pdf', title_number=title.number) }}" class="image">
+            <img src="/static/images/icon-register-document.png">
+          </a>
+          <span class="title">{% if is_caution_title %}Caution title register{% else %}Title register{% endif %}</span><br>
+          <span class="footnote">{% if is_caution_title %}Caution title {% endif %}PDF document</span>
+          <p>
+            <a class="button" id="download-link" style="vertical-align: baseline;" href="{{ url_for('display_title_pdf', title_number=title.number) }}" target="_blank"><b>Download</b></a>
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  {% if full_title_data %}
+    <div class="service-notice expand-bottom">
+      {% include 'display_full_title_details.html' %}
+    </div>
+  {% endif %}
+
+  <div class="text legal-division--top font-xsmall">
+    <ul class="list-bullet">
+      <li>The reference for your purchase is <strong>PAY123456</strong></h2></li>
+      <li>We have sent payment confirmation to <b>darcybloggs@gmail.com</b></li>
+    </ul>
+    <div class="panel-indent">
+      <p>If you have any problems with your purchase, you can call Land Registry on <b>0300 006 0411</b>.</p>
+      <p>For more contact methods, visit <a href="https://www.gov.uk/government/organisations/land-registry">www.gov.uk/government/organisations/land-registry</a></p>
+    </div>
+  </div>
+
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      <div class="text printhidden">
+        <h6 class="heading-medium">What next</h6>
+        <ul>
+          <li><a href="/title-search">Search for another title using this service</a></li>
+          <li><a href="https://gov.uk">Return to GOV.UK</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block js_bottom %}
+  <script type='text/javascript'>
+    var indexData = {{ title.indexPolygon | tojson }}
+  </script>
+  <script src="/static/javascripts/map.js"></script>
+{% endblock %}

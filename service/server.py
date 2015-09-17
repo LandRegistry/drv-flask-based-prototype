@@ -435,6 +435,30 @@ def payment_details():
                 total=total,
             )
         else:
-            return redirect(url_for('get_title', title_number=title_number, page=display_page_number, search_term=search_term))
+            if 'summary' in session['products']:
+                return redirect(url_for('get_title', title_number=title_number, page=display_page_number, search_term=search_term))
+            else:
+                return redirect(url_for('documents_for_title', title_number=title_number, page=display_page_number, search_term=search_term))
+    else:
+        abort(404)
+
+
+@app.route('/titles/<title_number>/documents_for_title', methods=['GET'])
+def documents_for_title(title_number):
+    title = _get_register_title(title_number)
+
+    if title:
+        display_page_number = int(request.args.get('page') or 1)
+        search_term = request.args.get('search_term', title_number)
+        breadcrumbs = _breadcumbs_for_title_details(title_number, search_term, display_page_number)
+
+        return render_template(
+            'display_documents_for_title.html',
+            title=title,
+            username=USERNAME,
+            search_term=search_term,
+            breadcrumbs=breadcrumbs,
+            is_caution_title=title_utils.is_caution_title(title),
+        )
     else:
         abort(404)

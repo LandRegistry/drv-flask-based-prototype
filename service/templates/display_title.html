@@ -77,28 +77,6 @@
 
     </div>
 
-    <div class="column-third">
-
-      <div class="printhidden panel-simple">
-        <span class="print-page"></span>
-      </div>
-
-      {% if show_pdf %}
-        <div class="download-documents js-stick-at-top-when-scrolling">
-          <div class="document-item">
-            <a href="{{ url_for('display_title_pdf', title_number=title.number) }}" class="image">
-              <img src="/static/images/icon-register-document.png">
-            </a>
-            <span class="title">{% if is_caution_title %}Caution title register{% else %}Title register{% endif %}</span><br>
-            <span class="footnote">{% if is_caution_title %}Caution title {% endif %}PDF document</span>
-            <p>
-              <a class="button" id="download-link" style="vertical-align: baseline;" href="{{ url_for('display_title_pdf', title_number=title.number) }}" target="_blank"><b>Download</b></a>
-            </p>
-          </div>
-        </div>
-      {% endif %}
-
-    </div>
   </div>
 
   {% if full_title_data %}
@@ -106,6 +84,19 @@
       {% include 'display_full_title_details.html' %}
     </div>
   {% endif %}
+
+  <a href="{{ url_for('choose_summary_or_documents', title_number=title.number, page=display_page_number, search_term=search_term) }}" class="button">Buy documents</a>
+
+  <div class="text legal-division--top font-xsmall">
+    <ul class="list-bullet">
+      <li>The reference for your purchase is <strong>PAY123456</strong></h2></li>
+      <li>We have sent payment confirmation to <b>darcybloggs@gmail.com</b></li>
+    </ul>
+    <div class="panel-indent">
+      <p>If you have any problems with your purchase, you can call Land Registry on <b>0300 006 0411</b>.</p>
+      <p>For more contact methods, visit <a href="https://www.gov.uk/government/organisations/land-registry">www.gov.uk/government/organisations/land-registry</a></p>
+    </div>
+  </div>
 
   <div class="grid-row">
     <div class="column-two-thirds">
@@ -124,13 +115,6 @@
 {% block js_bottom %}
   <script type='text/javascript'>
     var indexData = {{ title.indexPolygon | tojson }}
-  </script>
-  <script type='text/javascript'>
-    $(function() {
-      // stop the position:fixed subnav rolling into footer
-      GOVUK.stickAtTopWhenScrolling.init();
-      GOVUK.stopScrollingAtFooter.addEl($('.js-stick-at-top-when-scrolling'), $('.js-stick-at-top-when-scrolling').height());
-    });
   </script>
   <script src="/static/javascripts/map.js"></script>
 {% endblock %}
