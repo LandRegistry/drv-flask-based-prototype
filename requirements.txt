@@ -11,3 +11,4 @@ python-dateutil==2.4
 cffi==1.2.1
 Werkzeug==0.9.6
 wtforms==1.0.5
+gunicorn==19.3.0
