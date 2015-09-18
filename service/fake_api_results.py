@@ -1241,32 +1241,37 @@ ALL_TITLES = [
                 {
                     'addresses': [
                         {
-                            'address_string': '',
+                            'address_string': '101 Midsummer Boulevard, Milton Keynes, MK9 1AA',
                             'address_type': 'UK',
                         },
                     ],
                     'name': {
-                        'non_private_individual_name': 'CCHR Company Name',
+                        'non_private_individual_name': 'Abbey National PLC',
                     },
                 },
             ],
+            'ppi_data': 'The price stated to have been paid on 3 October 2012 was £188,000.',
             'proprietors': [
                 {
                     'addresses': [
                         {
-                            'address_string': 'address string UNKNOWN',
-                            'address_type': 'UNKNOWN',
-                            'auto_uppercase_override': True,
+                            'address_string': '3a Mandela Way, Southampton, SO15 5RZ',
+                            'address_type': 'UK',
+                            'house_no': '3a',
+                            'postcode': 'SO15 5RZ',
+                            'street_name': 'Mandela Way',
+                            'town': 'Southampton',
                         },
                     ],
                     'name': {
-                        'auto_uppercase_override': True,
-                        'name_category': 'LIMITED COMPANY OR PUBLIC LIMITED COMPANY',
-                        'non_private_individual_name': 'Proprietor name 1',
+                        'forename': 'Fred',
+                        'name_category': 'PRIVATE INDIVIDUAL',
+                        'surname': 'Smith',
+                        'title': 'Mr',
                     },
                 },
             ],
-            'tenure': 'Freehold',
+            'tenure': 'Leasehold',
         },
         'title_number': 'AZ679451',
     },
@@ -1286,32 +1291,37 @@ ALL_TITLES = [
                 {
                     'addresses': [
                         {
-                            'address_string': '',
+                            'address_string': '101 Midsummer Boulevard, Milton Keynes, MK9 1AA',
                             'address_type': 'UK',
                         },
                     ],
                     'name': {
-                        'non_private_individual_name': 'CCHR Company Name',
+                        'non_private_individual_name': 'Abbey National PLC',
                     },
                 },
             ],
+            'ppi_data': 'The price stated to have been paid on 3 October 2012 was £188,000.',
             'proprietors': [
                 {
                     'addresses': [
                         {
-                            'address_string': 'address string UNKNOWN',
-                            'address_type': 'UNKNOWN',
-                            'auto_uppercase_override': True,
+                            'address_string': '14a Mandela Way, Southampton, SO15 5RZ',
+                            'address_type': 'UK',
+                            'house_no': '14a',
+                            'postcode': 'SO15 5RZ',
+                            'street_name': 'Mandela Way',
+                            'town': 'Southampton',
                         },
                     ],
                     'name': {
-                        'auto_uppercase_override': True,
-                        'name_category': 'LIMITED COMPANY OR PUBLIC LIMITED COMPANY',
-                        'non_private_individual_name': 'Proprietor name 1',
+                        'forename': 'Darcy',
+                        'name_category': 'PRIVATE INDIVIDUAL',
+                        'surname': 'Bloggs',
+                        'title': 'Mr',
                     },
                 },
             ],
-            'tenure': 'Freehold',
+            'tenure': 'Leasehold',
         },
         'title_number': 'HP725748',
     },
@@ -1610,7 +1620,7 @@ ALL_TITLES = [
                     },
                 },
             ],
-            'ppi_data': 'The price stated to have been paid on 27 August 2004 was \xc2\xa3300,000.',
+            'ppi_data': 'The price stated to have been paid on 27 August 2004 was £300,000.',
             'proprietors': [
                 {
                     'addresses': [
@@ -1797,7 +1807,7 @@ ALL_TITLES = [
                     },
                 },
             ],
-            'ppi_data': 'The price stated to have been paid on 27 August 2004 was \xc2\xa3300,000.',
+            'ppi_data': 'The price stated to have been paid on 27 August 2004 was £300,000.',
             'proprietors': [
                 {
                     'addresses': [
@@ -2406,7 +2416,7 @@ ALL_TITLES = [
                     },
                 },
             ],
-            'ppi_data': 'The price stated to have been paid on 27 August 2004 was \xc2\xa3300,000.',
+            'ppi_data': 'The price stated to have been paid on 27 August 2004 was £300,000.',
             'proprietors': [
                 {
                     'addresses': [
@@ -2626,32 +2636,37 @@ SELECTED_FULL_RESULTS = {
                 {
                     'addresses': [
                         {
-                            'address_string': '',
+                            'address_string': '101 Midsummer Boulevard, Milton Keynes, MK9 1AA',
                             'address_type': 'UK',
                         },
                     ],
                     'name': {
-                        'non_private_individual_name': 'CCHR Company Name',
+                        'non_private_individual_name': 'Abbey National PLC',
                     },
                 },
             ],
+            'ppi_data': 'The price stated to have been paid on 3 October 2012 was £188,000.',
             'proprietors': [
                 {
                     'addresses': [
                         {
-                            'address_string': 'address string UNKNOWN',
-                            'address_type': 'UNKNOWN',
-                            'auto_uppercase_override': True,
+                            'address_string': '3a Mandela Way, Southampton, SO15 5RZ',
+                            'address_type': 'UK',
+                            'house_no': '3a',
+                            'postcode': 'SO15 5RZ',
+                            'street_name': 'Mandela Way',
+                            'town': 'Southampton',
                         },
                     ],
                     'name': {
-                        'auto_uppercase_override': True,
-                        'name_category': 'LIMITED COMPANY OR PUBLIC LIMITED COMPANY',
-                        'non_private_individual_name': 'Proprietor name 1',
+                        'forename': 'Fred',
+                        'name_category': 'PRIVATE INDIVIDUAL',
+                        'surname': 'Smith',
+                        'title': 'Mr',
                     },
                 },
             ],
-            'tenure': 'Freehold',
+            'tenure': 'Leasehold',
         },
         'geometry_data': {
             'extent': {
@@ -3283,32 +3298,37 @@ SELECTED_FULL_RESULTS = {
                 {
                     'addresses': [
                         {
-                            'address_string': '',
+                            'address_string': '101 Midsummer Boulevard, Milton Keynes, MK9 1AA',
                             'address_type': 'UK',
                         },
                     ],
                     'name': {
-                        'non_private_individual_name': 'CCHR Company Name',
+                        'non_private_individual_name': 'Abbey National PLC',
                     },
                 },
             ],
+            'ppi_data': 'The price stated to have been paid on 3 October 2012 was £188,000.',
             'proprietors': [
                 {
                     'addresses': [
                         {
-                            'address_string': 'address string UNKNOWN',
-                            'address_type': 'UNKNOWN',
-                            'auto_uppercase_override': True,
+                            'address_string': '14a Mandela Way, Southampton, SO15 5RZ',
+                            'address_type': 'UK',
+                            'house_no': '14a',
+                            'postcode': 'SO15 5RZ',
+                            'street_name': 'Mandela Way',
+                            'town': 'Southampton',
                         },
                     ],
                     'name': {
-                        'auto_uppercase_override': True,
-                        'name_category': 'LIMITED COMPANY OR PUBLIC LIMITED COMPANY',
-                        'non_private_individual_name': 'Proprietor name 1',
+                        'forename': 'Darcy',
+                        'name_category': 'PRIVATE INDIVIDUAL',
+                        'surname': 'Bloggs',
+                        'title': 'Mr',
                     },
                 },
             ],
-            'tenure': 'Freehold',
+            'tenure': 'Leasehold',
         },
         'geometry_data': {
             'extent': {
