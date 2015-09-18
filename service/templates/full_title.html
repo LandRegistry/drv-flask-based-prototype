@@ -5,11 +5,12 @@
         size: A4 portrait;
         margin: 10mm 10mm 15mm 10mm;
         @bottom-right {
-          content: "Page " counter(page) " of " counter(pages);
+          content: "Title number: {{ title_number }}\APage " counter(page) " of " counter(pages);
           font-family: 'GDSTransportWebsite';
           font-size: 8pt;
           color: silver;
           border-top: 1pt solid silver;
+          white-space: pre;
         }
       }
       body {
@@ -118,7 +119,6 @@
       .copy-18 {
         font-size: 18pt;
       }
-
       .text-80 {
         width: 80mm;
       }
@@ -148,29 +148,32 @@
   </head>
 
   <body>
-
+    <span class="copy-18 block">Official copy of register of title</span>
+    <span class="copy-14 block">Issued by Land Registry on {{ issued_date }}</span>
     <h1 class="register-title">
-      <span class="copy-18 block">Register of title</span>
       Title Number: {{ title_number }}
     </h1>
-    <h2 class="copy-14">Issued on: {{ issued_date }}</h2>
 
     <div id="cover" class="group">
       <div class="text-90 copy-10 fleft">
         <p>
           This copy shows the entries on the register of title on<br>
-          {{ last_entry_date }}
+          {{ last_entry_date }}.
         </p>
         <p>
           This date must be quoted as the “search from date” in any official
           search application based on this copy.
         </p>
         <p>
-          Edition Date {{ edition_date }}
+          Edition Date {{ edition_date }}.
         </p>
         <p>
-          The date at the beginning of an entry is the date on which the entry
+          Any date at the beginning of an entry is the date on which the entry
           was made in the register.
+        </p>
+        <p>
+          Under s.67 of the Land Registration Act 2002, this copy is admissible
+          in evidence to the same extent as the original.
         </p>
       </div>
       <img id="crown" src="{{ url_for('static', filename='images/crown.svg') }}">
@@ -198,6 +201,9 @@
             Specifies the class of title and identifies the owner. It contains
             any entries that affect the right of disposal.
           </p>
+          {% if not is_caution %}
+            <p>Title {{ class_of_title }}</p>
+          {% endif %}
         </div>
       {% elif sub_register['sub_register_name'] == 'C' %}
         <div class="sub-register-description">
@@ -214,15 +220,15 @@
 
       {% for entry in sub_register['entries'] %}
         <div class="register-entry group">
-          {% if 'entry_date' in entry %}<div class="entry-date">{{ entry['entry_date'] }}</div>{% endif %}
+          {% if 'entry_date' in entry %}<div class="entry-date">{{ entry['entry_date'] | date }}</div>{% endif %}
           <div class="entry">
             <h4{% if 'entry_date' in entry %} class="shunt"{% endif %}>{{ entry['sequence_number'] }}:</h4>
             <p>{{ entry['full_text'] }}</p>
           </div>
-        <div>
+        </div>
       {% endfor %}
 
     {% endfor %}
-
+    <div class="copy-18 block">End of Register</div>
   </body>
 </html>
