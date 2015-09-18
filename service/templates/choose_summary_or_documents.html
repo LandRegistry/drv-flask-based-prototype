@@ -15,7 +15,7 @@
           <p>The map relies on JavaScript being enabled in your browser.</p>
         </div>
       </div>
-
+      <a href="{{ url_for('find_titles') }}">Search for another property</a>
     </div>
 
     <div class="column-third">
@@ -41,16 +41,43 @@
 
       <p class="heading-medium">How would you like to view this information?</p>
       <form action="{{ url_for('chosen_summary_or_documents', title_number=title.number, page=display_page_number, search_term=search_term) }}" method="post">
-        <div>
-          <input type="checkbox" name="summary_or_documents" value="summary"> Summary view - £1.00
-        </div>
-        <div>
-          <input type="checkbox" name="summary_or_documents" value="documents"> Title documents - £3.00 per document
-        </div>
-        <div>
-          <input type="submit" value="Next" class="button">
-        </div>
+        <label for="box-1" class="bold-medium">
+          <input type="checkbox" id="box-1" name="summary_or_documents" value="summary"> Summary view - £1.00
+        </label>
+        <details>
+          <summary>What is in the summary view?</summary>
+          <p>The summary view contains reduced information of the full register. It consists of the following information only:</p>
+          <ul class="list-bullet">
+            <li>address and title number</li>
+            <li>owner name and address details</li>
+            <li>any lender name and address details</li>
+            <li>tenure, title quality and price paid details</li>
+          </ul>
+        </details>
+
+        <label for="box-2" class="bold-medium">
+          <input type="checkbox" id="box-2" name="summary_or_documents" value="documents"> Title documents - £3.00 per document
+        </label>
+        <details>
+          <summary>What are title documents?</summary>
+          <p>Title documents are available in PDF format to download and keep.</p>
+          <p>The <b>title register</b> has details about the property or land, including:</p>
+          <ul class="list-bullet">
+            <li>title number</li>
+            <li>who owns it</li>
+            <li>what they paid for it (properties only, if available)</li>
+            <li>any rights of way</li>
+            <li>whether a mortgage on it has been ‘discharged’, eg paid off</li>
+          </ul>
+          <p>The <b>title plan</b> includes details of:</p>
+          <ul class="list-bullet">
+            <li>the property’s location</li>
+            <li>the general boundaries</li>
+          </ul>
+        </details>
+        <input type="submit" value="Next" class="button">
       </form>
+
     </div>
 
   </div>

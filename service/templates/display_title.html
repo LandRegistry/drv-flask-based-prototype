@@ -1,4 +1,4 @@
-{% extends "imports.html" %}
+{% extends "layout.html" %}
 
 {% block body %}
   {% if is_caution_title %}
@@ -19,12 +19,6 @@
           Not Available
         {% endif %}
       </p>
-
-      <div id="map">
-        <div class="panel-simple">
-          <p>The map relies on JavaScript being enabled in your browser.</p>
-        </div>
-      </div>
 
       <dl class="definition-tabular expand-top-half">
         <dt>{% if is_caution_title %}Cautioner{% else %}Owner{% endif %}{{ title.proprietors|length|pluralize }}</dt>
@@ -69,10 +63,17 @@
           <dd><b>{{ title.tenure }}</b></dd>
         {% endif %}
 
+        <dt>Lease term</dt>
+        <dd><b>99 years</b> from 3 October 2012</dd>
+
         {% if title.ppi_data %}
-          <dt>Price paid/stated</dt>
+          <dt>Price paid</dt>
           <dd><b>{{ title.ppi_data }}</b></dd>
         {% endif %}
+
+        <dt>Title quality</dt>
+        <dd><b>Absolute</b></dd>
+
       </dl>
 
     </div>
@@ -110,11 +111,4 @@
     </div>
   </div>
 
-{% endblock %}
-
-{% block js_bottom %}
-  <script type='text/javascript'>
-    var indexData = {{ title.indexPolygon | tojson }}
-  </script>
-  <script src="/static/javascripts/map.js"></script>
 {% endblock %}
