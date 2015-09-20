@@ -5,7 +5,7 @@
 
     <div class="column-two-thirds">
       <h1 class="heading-xlarge">Available documents</h1>
-      <form action="{{ url_for('chosen_documents', title_number=title.number, page=display_page_number, search_term=search_term) }}" method="post">
+      <form action="{{ url_for('chosen_documents', title_number=title.number, page=display_page_number, search_term=search_term, products=products_string) }}" method="post">
         <div>
           <input type="checkbox" name="documents" value="title_register"> <strong>Title register £3.00</strong>
           <p>Full details about the property or land, including who owns it and any rights of way.</p>

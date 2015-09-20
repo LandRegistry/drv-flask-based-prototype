@@ -4,7 +4,6 @@ from service import error_handler, static, title_utils, template_filters
 
 app = Flask(__name__)
 app.debug = True
-app.secret_key = 'blah'  # app.secret_key needed by flask.session
 
 static.register_assets(app)
 

@@ -1,6 +1,6 @@
-from datetime import datetime                                                                                   # type: ignore
-from flask import abort, make_response, Markup, redirect, render_template, request, Response, session, url_for  # type: ignore
-from flask_weasyprint import HTML, render_pdf                                                                   # type: ignore
+from datetime import datetime                                                                          # type: ignore
+from flask import abort, make_response, Markup, redirect, render_template, request, Response, url_for  # type: ignore
+from flask_weasyprint import HTML, render_pdf                                                          # type: ignore
 import re
 
 from service import address_utils, api_client, app, title_formatter, title_utils
@@ -20,8 +20,9 @@ def signin_page():
 @app.route('/login', methods=['POST'])
 def sign_in():
     title_number = request.args.get('title_number')
-    display_page_number = int(request.args.get('page') or 1)
     search_term = request.args.get('search_term', title_number)
+    display_page_number = int(request.args.get('page') or 1)
+    products_string = request.args.get('products') or ''
 
     form = SigninForm(csrf_enabled=False)
 
@@ -29,7 +30,7 @@ def sign_in():
         # entered invalid login form details so send back to same page with form error messages
         return _login_page(form)
     else:
-        return redirect(url_for('payment_details', title_number=title_number, page=display_page_number, search_term=search_term))
+        return redirect(url_for('payment_details', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string))
 
 
 @app.route('/logout', methods=['GET'])
@@ -42,13 +43,14 @@ def get_title(title_number):
     title = _get_register_title(title_number)
 
     if title:
-        display_page_number = int(request.args.get('page') or 1)
         search_term = request.args.get('search_term', title_number)
+        display_page_number = int(request.args.get('page') or 1)
+        products_string = request.args.get('products') or ''
         breadcrumbs = _breadcumbs_for_title_details(title_number, search_term, display_page_number)
         show_pdf = True
         full_title_data = None
 
-        return _title_details_page(title, search_term, breadcrumbs, show_pdf, full_title_data)
+        return _title_details_page(title, search_term, display_page_number, products_string, breadcrumbs, show_pdf, full_title_data)
     else:
         abort(404)
 
@@ -164,8 +166,9 @@ def _normalise_postcode(postcode_in):
 
 def _login_page(form=None, show_unauthorised_message=False, next_url=None):
     title_number = request.args.get('title_number')
-    display_page_number = int(request.args.get('page') or 1)
     search_term = request.args.get('search_term', title_number)
+    display_page_number = int(request.args.get('page') or 1)
+    products_string = request.args.get('products') or ''
 
     if not form:
         form = SigninForm(csrf_enabled=False)
@@ -180,16 +183,19 @@ def _login_page(form=None, show_unauthorised_message=False, next_url=None):
         next=next_url,
         title_number=title_number,
         search_term=search_term,
-        page=display_page_number,
+        display_page_number=display_page_number,
+        products_string=products_string,
     )
 
 
-def _title_details_page(title, search_term, breadcrumbs, show_pdf, full_title_data):
+def _title_details_page(title, search_term, display_page_number, products_string, breadcrumbs, show_pdf, full_title_data):
     return render_template(
         'display_title.html',
         title=title,
         username=USERNAME,
         search_term=search_term,
+        display_page_number=display_page_number,
+        products_string=products_string,
         breadcrumbs=breadcrumbs,
         show_pdf=show_pdf,
         full_title_data=full_title_data,
@@ -252,6 +258,8 @@ def choose_summary_or_documents(title_number):
     if title:
         display_page_number = int(request.args.get('page') or 1)
         search_term = request.args.get('search_term', title_number)
+        products_string = request.args.get('products') or ''
+
         breadcrumbs = [
             {'text': 'Search the land and property register', 'url': url_for('find_titles')},
             {'text': 'Search results', 'url': url_for('find_titles_page', search_term=search_term, page=display_page_number)},
@@ -262,7 +270,8 @@ def choose_summary_or_documents(title_number):
             title=title,
             username=USERNAME,
             search_term=search_term,
-            page=display_page_number,
+            display_page_number=display_page_number,
+            products_string=products_string,
             breadcrumbs=breadcrumbs,
             is_caution_title=title_utils.is_caution_title(title),
         )
@@ -276,11 +285,11 @@ def chosen_summary_or_documents(title_number):
     search_term = request.args.get('search_term', title_number)
 
     products = request.form.getlist('summary_or_documents')
-    session['products'] = products
+    products_string = '.'.join(sorted(products))  # unlike commas, dots are not a reserved character in percent-encoding
     if 'documents' in products:
-        return redirect(url_for('choose_documents', title_number=title_number, page=display_page_number, search_term=search_term))
+        return redirect(url_for('choose_documents', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string))
     elif 'summary' in products:
-        return redirect(url_for('choose_has_account', title_number=title_number, page=display_page_number, search_term=search_term))
+        return redirect(url_for('choose_has_account', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string))
     else:
         # TODO: use JavaScript to prevent users from submitting the form with no checkboxes selected
         abort(404)
@@ -293,10 +302,20 @@ def choose_documents(title_number):
     if title:
         display_page_number = int(request.args.get('page') or 1)
         search_term = request.args.get('search_term', title_number)
+        products_string = request.args.get('products') or ''
         breadcrumbs = [
-            {'text': 'Search the land and property register', 'url': url_for('find_titles')},
-            {'text': 'Search results', 'url': url_for('find_titles_page', search_term=search_term, page=display_page_number)},
-            {'text': 'Choose summary or documents', 'url': url_for('choose_summary_or_documents', title_number=title_number, search_term=search_term, page=display_page_number)},
+            {
+                'text': 'Search the land and property register',
+                'url': url_for('find_titles')
+            },
+            {
+                'text': 'Search results',
+                'url': url_for('find_titles_page', search_term=search_term, page=display_page_number, products=products_string)
+            },
+            {
+                'text': 'Choose summary or documents',
+                'url': url_for('choose_summary_or_documents', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string)
+            },
         ]
 
         return render_template(
@@ -304,7 +323,8 @@ def choose_documents(title_number):
             title=title,
             username=USERNAME,
             search_term=search_term,
-            page=display_page_number,
+            display_page_number=display_page_number,
+            products_string=products_string,
             breadcrumbs=breadcrumbs,
         )
     else:
@@ -313,16 +333,16 @@ def choose_documents(title_number):
 
 @app.route('/titles/<title_number>/chosen_documents', methods=['POST'])
 def chosen_documents(title_number):
-    display_page_number = int(request.args.get('page') or 1)
     search_term = request.args.get('search_term', title_number)
+    display_page_number = int(request.args.get('page') or 1)
 
     new_products = set(request.form.getlist('documents'))
-    products = set(session['products'])
+    products = set((request.args.get('products') or '').split('.'))
     products -= {'title_register', 'title_plan'}
     products |= new_products
-    session['products'] = list(products)
+    products_string = '.'.join(sorted(list(products)))
     if 'title_register' in products or 'title_plan' in products:
-        return redirect(url_for('choose_has_account', title_number=title_number, page=display_page_number, search_term=search_term))
+        return redirect(url_for('choose_has_account', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string))
     else:
         # TODO: use JavaScript to prevent users from submitting the form with no checkboxes selected
         abort(404)
@@ -331,36 +351,40 @@ def chosen_documents(title_number):
 @app.route('/sign_in', methods=['GET'])
 def choose_has_account():
     title_number = request.args.get('title_number')
-    display_page_number = int(request.args.get('page') or 1)
     search_term = request.args.get('search_term', title_number)
+    display_page_number = int(request.args.get('page') or 1)
+    products_string = request.args.get('products') or ''
 
     return render_template(
         'choose_has_account.html',
-        title_number=request.args.get('title_number'),
+        title_number=title_number,
         username=USERNAME,
-        search_term=request.args.get('search_term'),
-        page=int(request.args.get('page') or 1),
+        search_term=search_term,
+        display_page_number=display_page_number,
+        products_string=products_string,
     )
 
 
 @app.route('/chosen_has_account', methods=['POST'])
 def chosen_has_account():
     title_number = request.args.get('title_number')
-    display_page_number = int(request.args.get('page') or 1)
     search_term = request.args.get('search_term', title_number)
+    display_page_number = int(request.args.get('page') or 1)
+    products_string = request.args.get('products')
 
     has_account = request.form.get('has_account') == 'yes'
     if has_account:
-        return redirect(url_for('sign_in', title_number=title_number, page=display_page_number, search_term=search_term))
+        return redirect(url_for('sign_in', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string))
     else:
-        return redirect(url_for('account_details', title_number=title_number, page=display_page_number, search_term=search_term))
+        return redirect(url_for('account_details', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string))
 
 
 @app.route('/account_details', methods=['GET', 'POST'])
 def account_details():
     title_number = request.args.get('title_number')
-    display_page_number = int(request.args.get('page') or 1)
     search_term = request.args.get('search_term', title_number)
+    display_page_number = int(request.args.get('page') or 1)
+    products_string = request.args.get('products') or ''
 
     if request.method == 'GET':
         form = AccountForm(csrf_enabled=False)
@@ -377,10 +401,11 @@ def account_details():
             title_number=title_number,
             username=USERNAME,
             search_term=search_term,
-            page=display_page_number,
+            display_page_number=display_page_number,
+            products_string=products_string,
         )
     else:
-        return redirect(url_for('account_created', title_number=title_number, page=display_page_number, search_term=search_term))
+        return redirect(url_for('account_created', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string))
 
 
 @app.route('/account_created', methods=['GET'])
@@ -388,13 +413,15 @@ def account_created():
     title_number = request.args.get('title_number')
     display_page_number = int(request.args.get('page') or 1)
     search_term = request.args.get('search_term', title_number)
+    products_string = request.args.get('products') or ''
 
     return render_template(
         'account_created.html',
         title_number=title_number,
         username=USERNAME,
         search_term=search_term,
-        page=display_page_number,
+        display_page_number=display_page_number,
+        products_string=products_string,
     )
 
 
@@ -404,8 +431,10 @@ def payment_details():
     title = _get_register_title(title_number)
 
     if title:
-        display_page_number = int(request.args.get('page') or 1)
         search_term = request.args.get('search_term', title_number)
+        display_page_number = int(request.args.get('page') or 1)
+        products_string = request.args.get('products') or ''
+        product_keys = sorted(products_string.split('.'))
 
         if request.method == 'GET':
             form = PaymentForm(csrf_enabled=False)
@@ -415,7 +444,6 @@ def payment_details():
             show_form = not form.validate()
 
         if show_form:
-            product_keys = sorted(session['products'])
             product_info = {
                 'summary': {'name': 'Summary view', 'price': 1},
                 'title_plan': {'name': 'Title plan', 'price': 3},
@@ -430,15 +458,16 @@ def payment_details():
                 form=form,
                 username=USERNAME,
                 search_term=search_term,
-                page=display_page_number,
+                display_page_number=display_page_number,
                 products=products,
+                products_string=products_string,
                 total=total,
             )
         else:
-            if 'summary' in session['products']:
-                return redirect(url_for('get_title', title_number=title_number, page=display_page_number, search_term=search_term))
+            if 'summary' in product_keys:
+                return redirect(url_for('get_title', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string))
             else:
-                return redirect(url_for('documents_for_title', title_number=title_number, page=display_page_number, search_term=search_term))
+                return redirect(url_for('documents_for_title', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string))
     else:
         abort(404)
 
@@ -450,14 +479,15 @@ def documents_for_title(title_number):
     if title:
         display_page_number = int(request.args.get('page') or 1)
         search_term = request.args.get('search_term', title_number)
-        breadcrumbs = _breadcumbs_for_title_details(title_number, search_term, display_page_number)
-
-        product_keys = sorted(session['products'])
+        products_string = request.args.get('products') or ''
+        product_keys = sorted(products_string.split('.'))
         product_info = {
             'title_plan': {'name': 'Title plan'},
             'title_register': {'name': 'Title register'},
         }
         products = [product_info[product_key] for product_key in product_keys if product_key in product_info]
+
+        breadcrumbs = _breadcumbs_for_title_details(title_number, search_term, display_page_number)
 
         return render_template(
             'display_documents_for_title.html',
@@ -465,6 +495,8 @@ def documents_for_title(title_number):
             products=products,
             username=USERNAME,
             search_term=search_term,
+            display_page_number=display_page_number,
+            products_string=products_string,
             breadcrumbs=breadcrumbs,
             is_caution_title=title_utils.is_caution_title(title),
         )

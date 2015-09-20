@@ -6,7 +6,7 @@
       <h1 class="heading-xlarge">Account created</h1>
       <p>Thank you for registering. You will need your email address and password to sign-in in the future.</p>
       <div>
-        <a href="{{ url_for('payment_details', title_number=title_number, page=display_page_number, search_term=search_term) }}" class="button">Continue</a>
+        <a href="{{ url_for('payment_details', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string) }}" class="button">Continue</a>
       </div>
     </div>
   </div>

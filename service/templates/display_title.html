@@ -86,7 +86,7 @@
     </div>
   {% endif %}
 
-  <a href="{{ url_for('choose_summary_or_documents', title_number=title.number, page=display_page_number, search_term=search_term) }}" class="button">Buy documents</a>
+  <a href="{{ url_for('choose_summary_or_documents', title_number=title.number, search_term=search_term, page=display_page_number, products=products_string) }}" class="button">Buy documents</a>
 
   <div class="text legal-division--top font-xsmall">
     <ul class="list-bullet">

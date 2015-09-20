@@ -12,7 +12,7 @@
         There was a problem submitting the form
       </h1>
     {% endif %}
-    <form action="{{ url_for('account_details', title_number=title_number, page=display_page_number, search_term=search_term) }}" method="post">
+    <form action="{{ url_for('account_details', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string) }}" method="post">
       <dl>
         {{ render_field(form.name) }}
         {{ render_field(form.business_name) }}
