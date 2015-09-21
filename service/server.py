@@ -12,6 +12,11 @@ POSTCODE_REGEX = re.compile(address_utils.BASIC_POSTCODE_REGEX)
 USERNAME = 'Darcy Bloggs'
 
 
+@app.route('/cookies', methods=['GET'])
+def cookies():
+    return _cookies_page()
+
+
 @app.route('/login', methods=['GET'])
 def signin_page():
     return _login_page()
@@ -19,13 +24,21 @@ def signin_page():
 
 @app.route('/login', methods=['POST'])
 def sign_in():
+    title_number = request.args.get('title_number')
+    search_term = request.args.get('search_term', title_number)
+    display_page_number = int(request.args.get('page') or 1)
+
     form = SigninForm(csrf_enabled=False)
 
     if not form.validate():
         # entered invalid login form details so send back to same page with form error messages
         return _login_page(form)
     else:
-        return _process_valid_login_attempt(form)
+        next_url = request.args.get('next')
+        if next_url:
+            return redirect(next_url)
+        else:
+            return redirect(url_for('find_titles', title_number=title_number, search_term=search_term, page=display_page_number))
 
 
 @app.route('/logout', methods=['GET'])
@@ -38,13 +51,13 @@ def get_title(title_number):
     title = _get_register_title(title_number)
 
     if title:
-        display_page_number = int(request.args.get('page', 1))
         search_term = request.args.get('search_term', title_number)
+        display_page_number = int(request.args.get('page') or 1)
         breadcrumbs = _breadcumbs_for_title_details(title_number, search_term, display_page_number)
         show_pdf = True
         full_title_data = None
 
-        return _title_details_page(title, search_term, breadcrumbs, show_pdf, full_title_data)
+        return _title_details_page(title, search_term, display_page_number, breadcrumbs, show_pdf, full_title_data)
     else:
         abort(404)
 
@@ -65,7 +78,7 @@ def display_title_pdf(title_number):
 @app.route('/title-search', methods=['POST'])
 @app.route('/title-search/<search_term>', methods=['POST'])
 def find_titles():
-    display_page_number = int(request.args.get('page', 1))
+    display_page_number = int(request.args.get('page') or 1)
 
     search_term = request.form['search_term'].strip()
     if search_term:
@@ -79,7 +92,7 @@ def find_titles():
 @app.route('/title-search', methods=['GET'])
 @app.route('/title-search/<search_term>', methods=['GET'])
 def find_titles_page(search_term=''):
-    display_page_number = int(request.args.get('page', 1))
+    display_page_number = int(request.args.get('page') or 1)
     page_number = display_page_number - 1  # page_number is 0 indexed
 
     search_term = search_term.strip()
@@ -92,11 +105,6 @@ def find_titles_page(search_term=''):
 def _get_register_title(title_number):
     title = api_client.get_title(title_number)
     return title_formatter.format_display_json(title) if title else None
-
-
-def _process_valid_login_attempt(form):
-    next_url = request.args.get('next', 'title-search')
-    return redirect(next_url)
 
 
 def _get_address_search_response(search_term, page_number):
@@ -164,6 +172,10 @@ def _normalise_postcode(postcode_in):
 
 
 def _login_page(form=None, show_unauthorised_message=False, next_url=None):
+    title_number = request.args.get('title_number')
+    search_term = request.args.get('search_term', title_number)
+    display_page_number = int(request.args.get('page') or 1)
+
     if not form:
         form = SigninForm(csrf_enabled=False)
 
@@ -175,15 +187,19 @@ def _login_page(form=None, show_unauthorised_message=False, next_url=None):
         unauthorised_title=None,
         unauthorised_description=None,
         next=next_url,
+        title_number=title_number,
+        search_term=search_term,
+        display_page_number=display_page_number,
     )
 
 
-def _title_details_page(title, search_term, breadcrumbs, show_pdf, full_title_data):
+def _title_details_page(title, search_term, display_page_number, breadcrumbs, show_pdf, full_title_data):
     return render_template(
         'display_title.html',
         title=title,
         username=USERNAME,
         search_term=search_term,
+        display_page_number=display_page_number,
         breadcrumbs=breadcrumbs,
         show_pdf=show_pdf,
         full_title_data=full_title_data,
@@ -213,6 +229,10 @@ def _search_results_page(results, search_term):
     )
 
 
+def _cookies_page():
+    return render_template('cookies.html', username=USERNAME)
+
+
 def _create_string_date_only(datetoconvert):
     # converts to example : 12 August 2014
     date = datetoconvert.strftime('%-d %B %Y')
@@ -226,14 +246,21 @@ def _create_string_date_and_time(datetoconvert):
 
 
 def _create_pdf_template(sub_registers, title, title_number):
-    last_entry_date = _create_string_date_and_time(datetime(3001, 2, 3, 4, 5, 6))  # TODO use real date
+    # TODO use real date - this is reliant on new functionality to check the daylist
+    last_entry_date = _create_string_date_and_time(datetime(3001, 2, 3, 4, 5, 6))
     issued_date = _create_string_date_only(datetime.now())
     if title.get('edition_date'):
         edition_date = _create_string_date_only(datetime.strptime(title.get('edition_date'), "%Y-%m-%d"))
     else:
         edition_date = "No date given"
+    class_of_title = title.get('class_of_title')
+    # need to check for caution title as we don't display Class of title for them
+    is_caution = title.get('is_caution_title') is True
+
     return render_template('full_title.html', title_number=title_number, title=title,
                            last_entry_date=last_entry_date,
                            issued_date=issued_date,
                            edition_date=edition_date,
-                           sub_registers=sub_registers)
+                           class_of_title=class_of_title,
+                           sub_registers=sub_registers,
+                           is_caution=is_caution)

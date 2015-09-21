@@ -11,7 +11,7 @@
       </div>
     {% endif %}
 
-    <form action="{{ url_for('sign_in') }}" method="post" class="form">
+    <form action="{{ url_for('sign_in', title_number=title_number, search_term=search_term, page=display_page_number) }}" method="post" class="form">
       {{ form.hidden_tag() }}
       {% if form.errors %}
         <div class="error-summary" role="group" aria-labelledby="error-summary-heading-example-1" tabindex="-1">
