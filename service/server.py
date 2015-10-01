@@ -4,7 +4,7 @@ from flask_weasyprint import HTML, render_pdf                                   
 import re
 
 from service import address_utils, api_client, app, title_formatter, title_utils
-from service.forms import AccountForm, PaymentForm, SigninForm, TitleSearchForm
+from service.forms import AccountForm, PaymentForm, SigninForm, TitleSearchForm, AccountCreationForm
 
 TITLE_NUMBER_REGEX = re.compile('^([A-Z]{0,3}[1-9][0-9]{0,5}|[0-9]{1,6}[ZT])$')
 POSTCODE_REGEX = re.compile(address_utils.BASIC_POSTCODE_REGEX)
@@ -300,15 +300,7 @@ def chosen_summary_or_documents(title_number):
     display_page_number = int(request.args.get('page') or 1)
     search_term = request.args.get('search_term', title_number)
 
-    products = request.form.getlist('summary_or_documents')
-    products_string = '.'.join(sorted(products))  # unlike commas, dots are not a reserved character in percent-encoding
-    if 'documents' in products:
-        return redirect(url_for('choose_documents', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string))
-    elif 'summary' in products:
-        return redirect(url_for('choose_has_account', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string))
-    else:
-        # TODO: use JavaScript to prevent users from submitting the form with no checkboxes selected
-        abort(404)
+    return redirect(url_for('choose_has_account', title_number=title_number, search_term=search_term, page=display_page_number))
 
 
 @app.route('/titles/<title_number>/choose_documents', methods=['GET'])
@@ -392,8 +384,35 @@ def chosen_has_account():
     if has_account:
         return redirect(url_for('sign_in', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string))
     else:
-        return redirect(url_for('account_details', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string))
+        return redirect(url_for('create_account', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string))
 
+@app.route('/create_account', methods=['GET', 'POST'])
+def create_account():
+    title_number = request.args.get('title_number')
+    search_term = request.args.get('search_term', title_number)
+    display_page_number = int(request.args.get('page') or 1)
+    products_string = request.args.get('products') or ''
+
+    if request.method == 'GET':
+        form = AccountCreationForm(csrf_enabled=False)
+        show_form = True
+    else:  # POST
+        form = AccountCreationForm(request.form, csrf_enabled=False)
+        show_form = not form.validate()
+
+    if show_form:
+        # no existing form (GET) or POSTed invalid form details
+        return render_template(
+            'account_creation.html',
+            form=form,
+            title_number=title_number,
+            username=USERNAME,
+            search_term=search_term,
+            display_page_number=display_page_number,
+            products_string=products_string,
+        )
+    else:
+        return redirect(url_for('account_details', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string))
 
 @app.route('/account_details', methods=['GET', 'POST'])
 def account_details():

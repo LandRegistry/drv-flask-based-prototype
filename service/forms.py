@@ -25,12 +25,11 @@ class AccountForm(Form):  # type: ignore
     name = StringField('Your name', [Required(message='Name is required'), Length(min=4, max=70, message='Name is too short/long')])
     business_name = StringField('Business name (optional)')
     telephone_number = StringField('Telephone number (optional)')
-    address_line_1 = StringField('Address', [Required(message='First line of address is required'), Length(min=4, max=70, message='First line of address is too short/long')])
+    address_line_1 = StringField('Building name/number and street', validators=[Required(message='First line of address is required'), Length(min=4, max=70, message='First line of address is too short/long')])
     address_line_2 = StringField('')
-    address_line_3 = StringField('')
-    address_line_4 = StringField('')
-    address_line_5 = StringField('')
-    address_line_6 = StringField('')
+    town = StringField('Town or city')
+    county = StringField('County (optional)')
+    postcode = StringField('Postcode')
 
     def __init__(self, *args, **kwargs):
         Form.__init__(self, *args, **kwargs)
@@ -48,6 +47,13 @@ class PaymentForm(Form):  # type: ignore
     county = StringField('County')
     postcode = StringField('Postcode', [Required(message='Postcode is required'), Length(min=5, max=8, message='Postcode is too short/long')])
     email = StringField('Email', [Required(message='Email is required'), Length(min=6, max=70, message='Email is too short/long')])
+
+    def __init__(self, *args, **kwargs):
+        Form.__init__(self, *args, **kwargs)
+
+class AccountCreationForm(Form): # type: ignore
+    email = StringField('')
+    password = StringField('')
 
     def __init__(self, *args, **kwargs):
         Form.__init__(self, *args, **kwargs)

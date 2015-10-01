@@ -8,21 +8,22 @@
     <h1 class="heading-large">Create account</h1>
 
     {% if form.errors %}
-      <h1 class="heading-medium error-summary-heading">
+      <h2 class="heading-medium error-summary-heading">
         There was a problem submitting the form
-      </h1>
+      </h2>
     {% endif %}
     <form action="{{ url_for('account_details', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string) }}" method="post">
       <dl>
         {{ render_field(form.name) }}
         {{ render_field(form.business_name) }}
         {{ render_field(form.telephone_number) }}
-        {{ render_field(form.address_line_1) }}
-        {{ render_field(form.address_line_2) }}
-        {{ render_field(form.address_line_3) }}
-        {{ render_field(form.address_line_4) }}
-        {{ render_field(form.address_line_5) }}
-        {{ render_field(form.address_line_6) }}
+        <h3 class="heading-medium">Home address</h3>
+        {{ render_field(form.address_line_1, size="40") }}
+        {{ render_field(form.address_line_2, size="40") }}
+        {{ render_field(form.town, size="30") }}
+        {{ render_field(form.county, size="30") }}
+        {{ render_field(form.postcode) }}
+
       </dl>
       <input type="submit" value="Continue" class="button">
     </form>

@@ -78,7 +78,17 @@
 
     </div>
 
+    <div class="column-third printhidden">
+      <div class="payment-summary js-stick-at-top-when-scrolling">
+        <div class="button-print">
+          <a href="javascript:window.print();">Print this page</a>
+        </div>
+      </div>
+    </div>
+
   </div>
+
+
 
   {% if full_title_data %}
     <div class="service-notice expand-bottom">
@@ -111,4 +121,14 @@
     </div>
   </div>
 
+{% endblock %}
+
+{% block js_bottom %}
+  <script type='text/javascript'>
+    $(function() {
+      // stop the position:fixed subnav rolling into footer
+      GOVUK.stickAtTopWhenScrolling.init();
+      GOVUK.stopScrollingAtFooter.addEl($('.js-stick-at-top-when-scrolling'), $('.js-stick-at-top-when-scrolling').height());
+    });
+  </script>
 {% endblock %}
