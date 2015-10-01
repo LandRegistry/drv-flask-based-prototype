@@ -44,7 +44,7 @@ class PaymentForm(Form):  # type: ignore
     building_and_street_1 = StringField('Building and street', [Required(message='First line of address is required'), Length(min=4, max=70, message='First line of address is too short/long')])
     building_and_street_2 = StringField('')
     town = StringField('Town', [Required(message='Town or city is required'), Length(min=4, max=70, message='Town or city is too short/long')])
-    county = StringField('County')
+    county = StringField('County (optional)')
     postcode = StringField('Postcode', [Required(message='Postcode is required'), Length(min=5, max=8, message='Postcode is too short/long')])
     email = StringField('Email', [Required(message='Email is required'), Length(min=6, max=70, message='Email is too short/long')])
 

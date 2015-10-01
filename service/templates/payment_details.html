@@ -20,12 +20,12 @@
           {{ render_field(form.card_security_code) }}
           {{ render_field(form.expiry_month) }}
           {{ render_field(form.expiry_year) }}
-          {{ render_field(form.building_and_street_1) }}
-          {{ render_field(form.building_and_street_2) }}
-          {{ render_field(form.town) }}
-          {{ render_field(form.county) }}
+          {{ render_field(form.building_and_street_1, size="40") }}
+          {{ render_field(form.building_and_street_2, size="40") }}
+          {{ render_field(form.town, size="30") }}
+          {{ render_field(form.county, size="30") }}
           {{ render_field(form.postcode) }}
-          {{ render_field(form.email) }}
+          {{ render_field(form.email, size="40") }}
         </dl>
         <input type="submit" value="Pay now" class="button">
       </form>
