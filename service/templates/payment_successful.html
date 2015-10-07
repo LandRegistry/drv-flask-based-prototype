@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  <div class="inner-block">
+
+    <div class='payment-successful'>
+      <h3>&#10004;&nbsp;Your payment has been successful</h3>
+      <h4>Reference number:</h4>
+      <h3>43236WPGV</h3>
+    </div>
+
+    <h1 class="heading-large">What happens next</h1>
+
+    <span>We will email you a receipt shortly to <b>darcybloggs@gmail.com</b></span><br>
+
+    <h1 class="heading-medium">Payment summary</h1>
+
+    <div width="100%; display:table; margin-bottom:40px;">
+      <div style="display:table-row;">
+        <div style="width:40%;display:table-cell; padding-bottom:10px;">Payment of:</div><div style="display:table-cell;padding-bottom:10px;"><b>Benefit debt repayment to DWP</b></div>
+      </div>
+      <div style="display:table-row;">
+        <div style="width:40%;display:table-cell;">Amount paid:</div><div style="display:table-cell;"><b>&pound;1.00</b></div>
+      </div>
+    </div>
+
+    <br><br>
+    <button type="button" class="button" value="?">Next</button>
+
+    {% if service_notice_html %}
+      <div class="service-notice expand-bottom">
+        {{ service_notice_html | safe }}
+      </div>
+    {% endif %}
+
+  </div>
+{% endblock %}

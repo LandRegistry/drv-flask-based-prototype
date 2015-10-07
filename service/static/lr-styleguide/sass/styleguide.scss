@@ -39,7 +39,32 @@
 @import 'partials/sg-component-pagination';
 @import 'partials/sg-component-search-results';
 
+<<<<<<< Updated upstream
 .payment-summary {
   padding: 15px;
   border: 8px solid $grey-3;
   }
+=======
+.payment-successful {
+  width: 100%;
+  margin-bottom:10px;
+  margin-top:10px;
+  padding-top:40px;
+  padding-bottom: 40px;
+  background-color: rgb(48,161,151);
+  text-align: center;
+}
+
+.payment-successful h3  {
+  color: rgb(255,255,255);
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.payment-successful h4  {
+  color: rgb(255,255,255);
+  font-weight: bold;
+  margin-top:10px;
+  margin-bottom:10px;
+}
+>>>>>>> Stashed changes

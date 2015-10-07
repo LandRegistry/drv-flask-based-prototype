@@ -11,6 +11,11 @@ POSTCODE_REGEX = re.compile(address_utils.BASIC_POSTCODE_REGEX)
 
 USERNAME = 'Darcy Bloggs'
 
+@app.route('/payment_successful', methods=['GET'])
+def payment_successful():
+    return render_template(
+        'payment_successful.html',
+    )
 
 @app.route('/cookies', methods=['GET'])
 def cookies():
