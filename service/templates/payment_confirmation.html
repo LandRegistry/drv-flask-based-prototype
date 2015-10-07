@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<main id="content" role="main">
+	<div class="grid-row">
+
+		<div class="column-half">
+			<h1 class="heading-xlarge">Check your details are correct before confirming</h1>
+
+			{{ payment_conf.building_and_street_1.data }}, {{ payment_conf.building_and_street_2.data }}</br>
+
+			{{ payment_conf.email.data }}
+
+			{{ billing_address }}
+
+		</div>
+
+	</div>
+</div>
+{% endblock %}

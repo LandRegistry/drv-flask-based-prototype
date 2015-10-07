@@ -1,25 +1,29 @@
 {% extends "layout.html" %}
 
-{% from "_formhelpers.html" import render_field %}
+{% from "_formhelpers.html" import render_field, render_group_field %}
 
 {% block body %}
   <div class="grid-row">
 
     <div class="column-two-thirds">
-      <h1 class="heading-large">Purchase {% for product in products %}{{ product.name|lower }}{% if not loop.last %}, {% endif %}{% endfor %}</h1>
+      <h1 class="heading-xlarge">Pay by credit card</h1>
 
       {% if form.errors %}
-        <h1 class="heading-medium error-summary-heading">
+        <h2 class="heading-medium error-summary-heading">
           There was a problem submitting the form
-        </h1>
+        </h2>
       {% endif %}
       <form action="{{ url_for('payment_details', title_number=title.number, search_term=search_term, page=display_page_number, products=products_string) }}" method="post">
         <dl>
           {{ render_field(form.full_name) }}
           {{ render_field(form.card_number) }}
-          {{ render_field(form.card_security_code) }}
-          {{ render_field(form.expiry_month) }}
-          {{ render_field(form.expiry_year) }}
+          {{ render_group_field(form.card_security_code, size="10") }}
+          <h3 class="heading-small">Expiry date</h3>
+          <div class="form-hint">
+            For example, 07/17
+          </div>
+          {{ render_group_field(form.expiry_month, size="5")  }}
+          {{ render_group_field(form.expiry_year, size="5")  }}
           {{ render_field(form.building_and_street_1, size="40") }}
           {{ render_field(form.building_and_street_2, size="40") }}
           {{ render_field(form.town, size="30") }}
@@ -27,8 +31,9 @@
           {{ render_field(form.postcode) }}
           {{ render_field(form.email, size="40") }}
         </dl>
-        <input type="submit" value="Pay now" class="button">
+        <input type="submit" value="Continue" class="button">
       </form>
+      <a href="{{ url_for('find_titles_page', title_number=title.number, search_term=search_term, page=display_page_number) }}" id="cancel">Cancel</a>
     </div>
 
     <div class="column-third">

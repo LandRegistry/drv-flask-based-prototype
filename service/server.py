@@ -477,6 +477,14 @@ def payment_details():
         else:  # POST
             form = PaymentForm(request.form, csrf_enabled=False)
             show_form = not form.validate()
+            return render_template(
+                'payment_confirmation.html',
+                title=title,
+                payment_conf=form,
+                username=USERNAME,
+                search_term=search_term,
+                display_page_number=display_page_number,
+            )
 
         if show_form:
             product_info = {
@@ -499,12 +507,29 @@ def payment_details():
                 total=total,
             )
         else:
-            if 'summary' in product_keys:
-                return redirect(url_for('get_title', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string))
-            else:
-                return redirect(url_for('documents_for_title', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string))
+            return redirect(url_for('payment_confirmation', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string, payment_conf=payment_conf))
     else:
         abort(404)
+
+@app.route('/payment_confirmation', methods=['POST'])
+def payment_confirmation(payment_conf):
+
+    billing_address = []
+    billing_address.append(payment_conf.building_and_street_1.data)
+    print(billing_address)
+
+    return render_template(
+        'payment_confirmation.html',
+        title=title,
+        username=USERNAME,
+        search_term=search_term,
+        display_page_number=display_page_number,
+        products=products,
+        products_string=products_string,
+        total=total,
+        payment_details=payment_conf,
+        billing_address=billing_address,
+    )
 
 
 @app.route('/titles/<title_number>/documents_for_title', methods=['GET'])
