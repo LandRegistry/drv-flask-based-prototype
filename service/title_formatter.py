@@ -92,7 +92,7 @@ def _get_property_address_index_polygon(geometry_data):
 
 
 def _format_private_individual_name(name):
-    name_list = [name[field] for field in ['title', 'forename', 'surname'] if field in name]
+    name_list = [name[field] for field in ['forename', 'surname'] if field in name]
 
     formatted_name = ' '.join(name_list)
     decoration = name.get('decoration')
