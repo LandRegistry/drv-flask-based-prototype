@@ -24,12 +24,14 @@
           </div>
           {{ render_group_field(form.expiry_month, size="5")  }}
           {{ render_group_field(form.expiry_year, size="5")  }}
-          {{ render_field(form.building_and_street_1, size="40") }}
-          {{ render_field(form.building_and_street_2, size="40") }}
-          {{ render_field(form.town, size="30") }}
-          {{ render_field(form.county, size="30") }}
-          {{ render_field(form.postcode) }}
-          {{ render_field(form.email, size="40") }}
+          <p>
+            {{ render_field(form.building_and_street_1, size="40") }}
+            {{ render_field(form.building_and_street_2, size="40") }}
+            {{ render_field(form.town, size="30") }}
+            {{ render_field(form.county, size="30") }}
+            {{ render_field(form.postcode) }}
+            {{ render_field(form.email, size="40") }}
+          </p>
         </dl>
         <input type="submit" value="Continue" class="button">
       </form>
