@@ -1,6 +1,6 @@
-from datetime import datetime                                                                          # type: ignore
-from flask import abort, make_response, Markup, redirect, render_template, request, Response, url_for  # type: ignore
-from flask_weasyprint import HTML, render_pdf                                                          # type: ignore
+from datetime import datetime                                                                                   # type: ignore
+from flask import abort, make_response, Markup, redirect, render_template, request, Response, url_for, session  # type: ignore
+from flask_weasyprint import HTML, render_pdf                                                                   # type: ignore
 import re
 
 from service import address_utils, api_client, app, title_formatter, title_utils
@@ -13,14 +13,21 @@ USERNAME = 'Darcy Bloggs'
 
 @app.route('/payment_successful', methods=['GET'])
 def payment_successful():
+    title_number = request.args.get('title_number')
+    email = session['card_details']['email']
+    search_term = request.args.get('search_term')
     return render_template(
         'payment_successful.html',
+        email=email,
+        title_number=title_number,
+        search_term=search_term,
     )
+
+app.secret_key = 'F12Zr47j\3yX R~X@H!jmM]Lwf/,?KT'
 
 @app.route('/cookies', methods=['GET'])
 def cookies():
     return _cookies_page()
-
 
 @app.route('/login', methods=['GET'])
 def signin_page():
@@ -482,13 +489,31 @@ def payment_details():
         else:  # POST
             form = PaymentForm(request.form, csrf_enabled=False)
             show_form = not form.validate()
-            return render_template(
-                'payment_confirmation.html',
+            if form:
+                session['card_details'] = {
+                    'full_name' : form.data.get('full_name', None),
+                    'email' : form.data.get('email', None),
+                    'card_number' : form.data.get('card_number', None),
+                    'expiry_month' : form.data.get('expiry_month', None),
+                    'expiry_year' : form.data.get('expiry_year', None),
+                }
+                session['billing_address'] = [
+                    form.data['building_and_street_1'],
+                    form.data['building_and_street_2'],
+                    form.data['town'],
+                    form.data['county'],
+                    form.data['postcode']
+                ]
+
+
+            return redirect(
+                url_for('payment_confirmation',
                 title=title,
+                title_number=title_number,
                 payment_conf=form,
                 username=USERNAME,
                 search_term=search_term,
-                display_page_number=display_page_number,
+                display_page_number=display_page_number)
             )
 
         if show_form:
@@ -503,6 +528,7 @@ def payment_details():
             return render_template(
                 'payment_details.html',
                 title=title,
+                title_number = title_number,
                 form=form,
                 username=USERNAME,
                 search_term=search_term,
@@ -516,25 +542,36 @@ def payment_details():
     else:
         abort(404)
 
-@app.route('/payment_confirmation', methods=['POST'])
-def payment_confirmation(payment_conf):
+@app.route('/payment_confirmation', methods=['GET'])
+def payment_confirmation():
 
-    billing_address = []
-    billing_address.append(payment_conf.building_and_street_1.data)
-    print(billing_address)
+    title_number = request.args.get('title_number')
+    display_page_number = int(request.args.get('display_page_number') or 1)
+    search_term = request.args.get('search_term')
+    card_details = session['card_details']
+    formatted_card_number = _format_card_number(card_details['card_number'])
+    address = session['billing_address']
+    billing_address = _format_billing_address(address)
 
     return render_template(
         'payment_confirmation.html',
-        title=title,
+        title_number=title_number,
         username=USERNAME,
         search_term=search_term,
         display_page_number=display_page_number,
-        products=products,
-        products_string=products_string,
-        total=total,
-        payment_details=payment_conf,
-        billing_address=billing_address,
+        card_details=card_details,
+        formatted_card_number=formatted_card_number,
+        billing_address=billing_address
     )
+
+def _format_billing_address(address):
+    billing_address = ', '.join(filter(None, address))
+    return billing_address
+
+def _format_card_number(card_number):
+    card = str(card_number)
+    formatted_card_number = card[-4:].rjust(len(card), "*")
+    return formatted_card_number
 
 
 @app.route('/titles/<title_number>/documents_for_title', methods=['GET'])

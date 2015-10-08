@@ -740,6 +740,29 @@ details {
   details .panel-indent {
     margin-top: 0; }
 
+table.payment_confirmation {
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-family: "nta", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.14286;
+  font-weight: 400;
+  text-transform: none;
+  padding: 0.75em 1.25em 0.5625em 0;
+  text-align: left; }
+  @media (min-width: 641px) {
+    table.payment_confirmation {
+      font-size: 16px;
+      line-height: 1.25; } }
+
+.payment_confirmation td {
+  font-weight: bold;
+  border: 0; }
+
+.payment_confirmation th {
+  font-weight: normal;
+  border: 0; }
+
 table {
   border-collapse: collapse;
   border-spacing: 0;
@@ -1443,11 +1466,10 @@ input[type=number] {
       position: absolute;
       border-left: 1px solid #fff; }
 
-<<<<<<< Updated upstream
 .payment-summary {
   padding: 15px;
   border: 8px solid #dee0e2; }
-=======
+
 .payment-successful {
   width: 100%;
   margin-bottom: 10px;
@@ -1467,4 +1489,10 @@ input[type=number] {
   font-weight: bold;
   margin-top: 10px;
   margin-bottom: 10px; }
->>>>>>> Stashed changes
+
+tr {
+  display: block;
+  float: left; }
+
+th, td {
+  display: block; }

@@ -88,19 +88,7 @@
 
   </div>
 
-  {% if full_title_data %}
-    <div class="service-notice expand-bottom">
-      {% include 'display_full_title_details.html' %}
-    </div>
-  {% endif %}
-
-  <a href="{{ url_for('choose_summary_or_documents', title_number=title.number, search_term=search_term, page=display_page_number, products=products_string) }}" class="button">Buy documents</a>
-
   <div class="text legal-division--top font-xsmall">
-    <ul class="list-bullet">
-      <li>The reference for your purchase is <strong>PAY123456</strong></h2></li>
-      <li>We have sent payment confirmation to <b>darcybloggs@gmail.com</b></li>
-    </ul>
     <div class="panel-indent">
       <p>If you have any problems with your purchase, you can call Land Registry on <b>0300 006 0411</b>.</p>
       <p>For more contact methods, visit <a href="https://www.gov.uk/government/organisations/land-registry">www.gov.uk/government/organisations/land-registry</a></p>
@@ -112,7 +100,7 @@
       <div class="text printhidden">
         <h6 class="heading-medium">What next</h6>
         <ul>
-          <li><a href="/title-search">Search for another title using this service</a></li>
+          <li><a href="{{ url_for('find_titles', search_term=search_term, page=display_page_number) }}" id="search_another_title">Search for another title using this service</a></li>
           <li><a href="https://gov.uk">Return to GOV.UK</a></li>
         </ul>
       </div>

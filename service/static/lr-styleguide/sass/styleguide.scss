@@ -39,12 +39,11 @@
 @import 'partials/sg-component-pagination';
 @import 'partials/sg-component-search-results';
 
-<<<<<<< Updated upstream
 .payment-summary {
   padding: 15px;
   border: 8px solid $grey-3;
   }
-=======
+
 .payment-successful {
   width: 100%;
   margin-bottom:10px;
@@ -67,4 +66,11 @@
   margin-top:10px;
   margin-bottom:10px;
 }
->>>>>>> Stashed changes
+
+tr {
+  display: block;
+  float: left;
+}
+th, td {
+  display: block;
+}

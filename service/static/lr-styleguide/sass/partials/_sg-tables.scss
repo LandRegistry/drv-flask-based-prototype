@@ -1,6 +1,24 @@
 // Tables
 // ==========================================================================
 
+table.payment_confirmation {
+  border-collapse: collapse;
+  border-spacing: 0;
+  @include core-16;
+  padding: em(12, 16) em(20, 16) em(9, 16) 0;
+  text-align: left;
+}
+
+.payment_confirmation td {
+  font-weight: bold;
+  border: 0;
+}
+
+.payment_confirmation th {
+  font-weight: normal;
+  border: 0;
+}
+
 table {
   border-collapse: collapse;
   border-spacing: 0;
@@ -21,7 +39,7 @@ table {
     // Right align headings for numeric content
     &.numeric {
       text-align: right;
-    } 
+    }
   }
 
   // Use tabular numbers for numeric table cells
