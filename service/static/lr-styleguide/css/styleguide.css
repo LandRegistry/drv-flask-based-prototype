@@ -749,8 +749,7 @@ table.payment_confirmation {
   font-weight: 400;
   text-transform: none;
   padding: 0.75em 1.25em 0.5625em 0;
-  text-align: left;
-  table-layout: fixed; }
+  text-align: left; }
   @media (min-width: 641px) {
     table.payment_confirmation {
       font-size: 16px;
@@ -758,8 +757,7 @@ table.payment_confirmation {
 
 .payment_confirmation td {
   font-weight: bold;
-  border: 0;
-  word-wrap: break-word; }
+  border: 0; }
 
 .payment_confirmation th {
   font-weight: normal;
@@ -779,17 +777,14 @@ table {
     padding: 0.75em 1.25em 0.5625em 0;
     text-align: left;
     color: #0b0c0c;
-    border-bottom: 1px solid #bfc1c3;
-    display: block;
-    word-wrap: break-word; }
+    border-bottom: 1px solid #bfc1c3; }
     @media (min-width: 641px) {
       table th,
       table td {
         font-size: 16px;
         line-height: 1.25; } }
   table th {
-    font-weight: 700;
-    display: block; }
+    font-weight: 700; }
     table th.numeric {
       text-align: right; }
   table td.numeric {
@@ -803,8 +798,6 @@ table {
       table td.numeric {
         font-size: 16px;
         line-height: 1.25; } }
-  table tr {
-    float: left; }
 
 .form {
   width: 100%; }
@@ -1496,3 +1489,10 @@ input[type=number] {
   font-weight: bold;
   margin-top: 10px;
   margin-bottom: 10px; }
+
+tr {
+  display: block;
+  float: left; }
+
+th, td {
+  display: block; }

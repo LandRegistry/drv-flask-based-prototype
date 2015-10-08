@@ -57,12 +57,14 @@
             <p>{{ title.tenure }}</p>
           </div>
         {% endif %}
-        <table class="payment_confirmation">
+        <table>
+          {% for product in products %}
+            <tr>
+              <td>{{ product.name }}</td><td><strong>£{{ product.price }}.00</strong></td>
+            </tr>
+          {% endfor %}
           <tr>
-            <th style="font-size: 23px">Total to pay</th>
-          </tr>
-          <tr>
-            <td style="font-size: 23px"><strong>£1.00</strong></td>
+            <td>Total to pay</td><td><strong>£{{ total }}.00</strong></td>
           </tr>
         </table>
       </div>
