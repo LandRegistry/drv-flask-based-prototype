@@ -11,6 +11,36 @@ POSTCODE_REGEX = re.compile(address_utils.BASIC_POSTCODE_REGEX)
 
 USERNAME = 'Darcy Bloggs'
 
+@app.route('/worldpay_1', methods=['POST'])
+def worldpay_1():
+    title_number = request.args.get('title_number')
+    search_term = request.args.get('search_term', title_number)
+    display_page_number = int(request.args.get('page') or 1)
+    products_string = request.args.get('products') or ''
+
+    return render_template(
+        'worldpay_1.html',
+        title_number=title_number,
+        username=USERNAME,
+        display_page_number=display_page_number,
+        products_string=products_string,
+    )
+
+@app.route('/worldpay_2', methods=['POST'])
+def worldpay_2():
+    title_number = request.args.get('title_number')
+    search_term = request.args.get('search_term', title_number)
+    display_page_number = int(request.args.get('page') or 1)
+    products_string = request.args.get('products') or ''
+
+    return render_template(
+        'worldpay_2.html',
+        title_number=title_number,
+        username=USERNAME,
+        display_page_number=display_page_number,
+        products_string=products_string,
+    )
+
 @app.route('/payment_processing', methods=['POST'])
 def payment_processing():
     title_number = request.args.get('title_number')
@@ -19,10 +49,10 @@ def payment_processing():
     products_string = request.args.get('products') or ''
 
     return render_template(
-        'payment-processing.html'
+        'payment_processing.html'
     )
 
-@app.route('/payment_successful', methods=['GET'])
+@app.route('/payment_successful', methods=['POST'])
 def payment_successful():
     title_number = request.args.get('title_number')
     email = session['card_details']['email']

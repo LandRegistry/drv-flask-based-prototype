@@ -12,13 +12,12 @@
 
     <div class="column-two-thirds">
 
-      <div class="expand">
-        <figure>
-          <div id="map-location">
-            <img src="http://placehold.it/465x265" alt="Map showing location of title address">
-          </div>
-        </figure>
+      <div id="map">
+        <div class="panel-simple">
+          <p>The map relies on JavaScript being enabled in your browser.</p>
+        </div>
       </div>
+
       <p class="lede collapse-top">
         {% if title.address_lines %}
           {{ '<br>'.join(title.address_lines)|safe }}
@@ -134,4 +133,10 @@
     });
   </script>
   <script src="/static/javascripts/map.js"></script>
+  <link rel="stylesheet" href="/static/vendor/leaflet-0.7.3/leaflet.css" />
+  <script src="/static/vendor/leaflet-0.7.3/leaflet.js"></script><!-- Leaflet -->
+  <script src="/static/javascripts/proj4.js"></script><!-- proj4js -->
+  <script src="/static/javascripts/proj4leaflet.js"></script><!-- proj4leaflet -->
+
+
   {% endblock %}
