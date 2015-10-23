@@ -17,14 +17,13 @@
           <p>The map relies on JavaScript being enabled in your browser.</p>
         </div>
       </div>
-
-      <p class="lede collapse-top">
+      <h2 class="heading-medium">
         {% if title.address_lines %}
           {{ '<br>'.join(title.address_lines)|safe }}
         {% else %}
           Not Available
         {% endif %}
-      </p>
+      </h2>
 
       <dl class="definition-tabular expand-top-half">
         <dt>{% if is_caution_title %}Cautioner{% else %}Owner{% endif %}{{ title.proprietors|length|pluralize }}</dt>
