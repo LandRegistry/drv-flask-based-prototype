@@ -1,0 +1,55 @@
+{{<govuk_template}}
+
+{{$pageTitle}}
+  Sign in
+{{/pageTitle}}
+
+{{$head}}
+  {{>includes/head}}
+  <link href="/public/stylesheets/alphagov-static.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="/public/stylesheets/land-registry-elements.css" media="screen" rel="stylesheet" type="text/css" />
+{{/head}}
+
+{{$content}}
+
+<main id="content" role="main">
+
+    {{>digital-register/includes/banner}}
+    
+
+    <div class="text">
+      <h1 class="heading-xlarge">Sign in</h1>
+
+      <form class="form" action="purchase-documents" method="get">
+
+        <div class="form-group">
+          <label class="form-label" for="email">Email address</label>
+          <input class="form-control-3-4" type="email" id="email" required>
+        </div><!-- form-group -->
+
+        <div class="form-group">
+          <label class="form-label" for"password">Password</label>
+          <input class="form-control-3-4" type="password" id="password" required>
+          <p><a target="_blank" href="https://eservices.landregistry.gov.uk/www/wps/myportal/Property_Search">I’ve forgotten my password</a></p>
+        </div><!-- form-group -->
+
+        <button class="button">Sign in</button>
+
+        <div class="panel-indent">
+          <p>To use this service, you will need a current Property Search User account. If you don't have one, you need to <a target="_blank" href="https://eservices.landregistry.gov.uk/www/wps/portal/RegisterForLRO">create an account</a></p>
+        </div>
+
+      </form>
+      
+      
+    </div>
+
+</main>
+
+{{/content}}
+
+{{$bodyEnd}}
+  {{>includes/scripts}}
+{{/bodyEnd}}
+
+{{/govuk_template}}

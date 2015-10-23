@@ -1496,3 +1496,11 @@ input[type=number] {
   font-weight: bold;
   margin-top: 10px;
   margin-bottom: 10px; }
+
+#processing {
+    text-align: center;
+  }
+#processing img {
+    width: 56px;
+    margin: 0 auto;
+  }

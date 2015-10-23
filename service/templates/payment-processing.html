@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<main id="content" role="main">
+{{title}}
+  <div id="processing" class="expand">
+    <h1 class="heading-xlarge">Redirecting to World Pay</h1>
+    <div>
+      <img src="/static/images/loader.gif">
+    </div>
+    <br/><br?
+    <!-- Powered by Worldpay logo-->
+    <a href="http://www.worldpay.com/" target="_blank" title="Payment Processing - Worldpay - Opens in new browser window"><img src="http://www.worldpay.com/images/poweredByWorldPay.gif" border="0" alt="Worldpay Payments Processing"></a>
+  </div>
+
+</main>
+
+  <script type="text/javascript">
+  //var timeoutID = window.setTimeout(move, 1500);
+  //function move() {
+  //  window.location.href = '{{ url_for('payment_details', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string) }}';
+  //}
+  </script>
+  {% endblock %}

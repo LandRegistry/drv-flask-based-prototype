@@ -1,62 +1,77 @@
 {% extends "imports.html" %}
 
 {% block body %}
-  {% if is_caution_title %}
-    <span class="alert-flag-hi-viz">Caution against first registration</span>
-    <br>
-  {% endif %}
+{% if is_caution_title %}
+<span class="alert-flag-hi-viz">Caution against first registration</span>
+<br>
+{% endif %}
 
-  <div class="grid-row">
+<!-- Open a Grid Row -->
+<div class="grid-row">
+  <!-- Limit width to two-thirds -->
+  <div class="column-two-thirds">
 
-    <div class="column-half">
+    {# Check if Title has any Data #}
 
-      <div id="map">
-        <div class="panel-simple">
-          <p>The map relies on JavaScript being enabled in your browser.</p>
-        </div>
+    {% if title.address_lines %}
+
+    <!-- 1. Start Title information (number, address and tenure information) -->
+    <h1 class="heading-large collapse-bottom">Summary of title {{title.number}}</h1>
+    <br/>
+    <div class="text">
+      <div itemscope itemtype="http://schema.org/PostalAddress" class="lede">
+        <span itemprop="streetAddress">
+        <b>{{ title.address_lines[0] }}</b><br>
+        </span>
+        <span itemprop="addressLocality"><b>{{ title.address_lines[1] }}</b></span><br>
+        <span itemprop="postalCode"><b>{{ title.address_lines[2] }}</b></span>
       </div>
-      <a href="{{ url_for('find_titles', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string) }}">Back to search results</a>
-    </div>
-
-    <div class="column-half">
-      {% if title.address_lines %}
-        <h1 class="heading-xlarge collapse-bottom">{{ title.address_lines[0] }}</h1>
-        <p class="lede collapse-top">
-          {{ '<br>'.join(title.address_lines[1:])|safe }}
-        </p>
-      {% else %}
-        <h1>No recorded address for this title</h1>
-      {% endif %}
-
-
-      <dl class="definition-tabular expand-top-half">
-        {% if not is_caution_title %}
-          <dt>Tenure type</dt>
+      <br/>
+      <dl class="definition-tabular">
+        <dt>Tenure type</dt>
           <dd><b>{{ title.tenure }}</b></dd>
-        {% endif %}
-
-        <dt>Title number</dt>
-        <dd><b>{{ title.number }}</b></dd>
       </dl>
-
-      <a href="{{ url_for('choose_has_account', title_number=title.number, search_term=search_term, page=display_page_number) }}" class="button">Next</a>
+      </div>
+      <!-- 1. Finish Title information -->
+      <!-- 2. Start information on what the user is actually going to receive -->
+      <div class="service-notice font-xsmall">
+        <p>The <b>Summary of title Register</b> contains:</p>
+        <ul class="list-bullet">
+          <li>address and title number</li>
+          <li>owner name and address details</li>
+          <li>any lender name and address details</li>
+          <li>an indication of the location and general boundaries</li>
+        </ul>
+      </div>
+      <!-- 2. Finish -->
+      <br/>
+      <!-- 3. Start definition of payment and what it is they are paying for -->
+      <dl class="definition-tabular">
+        <dt>Payment of</dt>
+          <dd><b>Summary of Title Register</b></dd>
+        <dt>Amount to pay</dt>
+          <dd><b>&pound;1</b></dd>
+      </dl>
+      <!-- 3. Finish -->
+      <br/>
+      <!-- 4. Start continuiation button for user to progress -->
+      <a href="{{ url_for('signin_page', title_number=title.number, search_term=search_term, page=display_page_number) }}" class="button">Buy Now</a>
+      <!-- 4. Finish -->
 
     </div>
-
   </div>
 
-{% endblock %}
+  {# I Title has no Data #}
 
-{% block js_bottom %}
-  <script type='text/javascript'>
-    var indexData = {{ title.indexPolygon | tojson }}
-  </script>
-  <script type='text/javascript'>
-    $(function() {
-      // stop the position:fixed subnav rolling into footer
-      GOVUK.stickAtTopWhenScrolling.init();
-      GOVUK.stopScrollingAtFooter.addEl($('.js-stick-at-top-when-scrolling'), $('.js-stick-at-top-when-scrolling').height());
-    });
-  </script>
-  <script src="/static/javascripts/map.js"></script>
+  {% else %}
+    <div class="text">Sorry, there is no recorded address for this title</div>
+  {% endif %}
+
+  <br/>
+
+  <!-- Offer user a link back to the Search Results -->
+  <a href="{{ url_for('find_titles', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string) }}">Back to search results</a>
+
+</div>
+
 {% endblock %}

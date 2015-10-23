@@ -5,7 +5,7 @@
     <span class="alert-flag-hi-viz">Caution against first registration</span>
     <br>
   {% endif %}
-  <h1 class="heading-xlarge collapse-bottom">Documents for {% if is_caution_title %}caution {% endif %}title {{ title.number }}</h1>
+  <h1 class="heading-large collapse-bottom">Documents for {% if is_caution_title %}caution {% endif %}title {{ title.number }}</h1>
   <p class="expand-bottom">This title was last changed on <b>{{ title.last_changed | date }}</b> at <b>{{ title.last_changed | time }}</b></p>
 
   <div class="grid-row">

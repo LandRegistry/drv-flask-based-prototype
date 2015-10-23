@@ -12,6 +12,13 @@
 
     <div class="column-two-thirds">
 
+      <div class="expand">
+        <figure>
+          <div id="map-location">
+            <img src="http://placehold.it/465x265" alt="Map showing location of title address">
+          </div>
+        </figure>
+      </div>
       <p class="lede collapse-top">
         {% if title.address_lines %}
           {{ '<br>'.join(title.address_lines)|safe }}
@@ -116,4 +123,15 @@
       GOVUK.stopScrollingAtFooter.addEl($('.js-stick-at-top-when-scrolling'), $('.js-stick-at-top-when-scrolling').height());
     });
   </script>
-{% endblock %}
+  <script type='text/javascript'>
+    var indexData = {{ title.indexPolygon | tojson }}
+  </script>
+  <script type='text/javascript'>
+    $(function() {
+      // stop the position:fixed subnav rolling into footer
+      GOVUK.stickAtTopWhenScrolling.init();
+      GOVUK.stopScrollingAtFooter.addEl($('.js-stick-at-top-when-scrolling'), $('.js-stick-at-top-when-scrolling').height());
+    });
+  </script>
+  <script src="/static/javascripts/map.js"></script>
+  {% endblock %}

@@ -1,0 +1,194 @@
+{{<govuk_template}}
+
+{{$pageTitle}}
+  Purchase
+{{/pageTitle}}
+
+{{$head}}
+  {{>includes/head}}
+  <link href="/public/vendor/leaflet/leaflet.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="/public/stylesheets/alphagov-static.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="/public/stylesheets/land-registry-elements.css" media="screen" rel="stylesheet" type="text/css" />
+
+  <style type="text/css">
+  .payment-summary {
+    padding: 15px;
+    border: 8px solid #DEE0E2;
+  }
+  </style>
+{{/head}}
+
+{{$content}}
+
+<main id="content" role="main">
+
+  {{>digital-register/includes/banner}}
+   <div class="grid-row">
+    <div class="global-breadcrumb column-two-thirds">
+      <nav role="navigation">
+        <ol>
+          <li><a href="search-page">Search the land and property register</a></li>
+            <li><a href="search-results-2">Results</li>
+            <li><a href="title-summary">Details</li>
+        </ol>
+      </nav>
+    </div><!-- global-breadcrumb -->
+
+    <div class="column-quarter column-flip">
+      <div class="account">
+        <a href="pre-sign-in">Sign out</a>
+      </div>
+    </div>
+
+  </div><!--grid-row -->
+  <h1 class="heading-xlarge">Purchase</h1>
+
+
+
+
+<div class="grid-row">
+
+    <div class="column-two-thirds">
+      <form class="form" action="payment-confirmation" method="get">
+
+        <fieldset>
+          <legend class="heading-large">Payment by Card</legend>
+
+          <div class="form-group">
+            <label class="form-label-bold" for="card-name">
+              Full name
+              <span class="form-hint">As it appears on the card.</span>
+            </label>
+            <input class="form-control" type="text" id="card-name" value="{{ name }}">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label-bold" for="card-number" autocomplete="off">Card number</label>
+            <input class="form-control" type="text" id="card-number">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label-bold" for="card-code">
+              Card security code
+              <span class="form-hint">3 digits at the back or with Amex: 4 digits on the front.</span>
+            </label>
+            <input class="form-control-1-4" type="text" id="card-code">
+            <img class="card-image" src="/public/images/card-security-code.png" style="display: inline; max-height: 38px; vertical-align: middle; margin-left: 8px;">
+          </div>
+
+          <div class="form-group">
+            <div class="form-date">
+              <label class="form-label-bold" for="dob-month">Expiry date</label>
+              <p class="form-hint">For example, 4/17</p>
+              <div class="form-group form-group-month">
+                <label for="dob-month">Month</label>
+                <input class="form-control" id="dob-month" type="text">
+              </div>
+              <div class="form-group form-group-month">
+                <label for="dob-year">Year</label>
+                <input class="form-control" id="dob-year" type="text">
+              </div>
+            </div>
+          </div>
+
+        </fieldset>
+
+
+
+        <fieldset>
+          
+          <h2 class="heading-medium">Billing Address</h2>
+
+          <div class="form-group">
+            <label class="form-label-bold" for="address-1">
+              Building name/number and street
+              <span class="form-hint">This is the address associated with the card.</span>
+            </label>            <input type="text" class="form-control expand-bottom-quarter" id="address-1" name="address-1">
+            <input type="text" class="form-control expand-bottom-quarter" id="address-2" name="address-2">
+          </div><!-- form-group -->
+          <div class="form-group">
+             <label class="form-label-bold" for="town">Town</label>
+             <input type="text" class="form-control expand-bottom-quarter" id="town" name="town">
+          </div>
+          <div class="form-group">
+              <label class="form-label-bold" for="county">County (optional)</label>
+             <input type="text" class="form-control expand-bottom-quarter" id="county" name="county">
+          </div>
+          <div class="form-group">
+              <label class="form-label-bold" for="postcode">Postcode</label>
+             <input type="text" class="form-control expand-bottom-quarter" id="postcode" name="postcode">
+          </div>   
+   
+
+          <div class="form-group">
+            <label class="form-label-bold" for="email">
+              Email
+              <span class="form-hint">We need this to confirm the payment with you.</span>
+            </label>
+            <input type="text" class="form-control" id="email" name="email">
+          </div><!-- form-group -->
+
+        </fieldset>
+
+        <div class="form-group">
+          <input type="submit" value="Continue" class="button">
+        </div>
+        <a href="title-summary" id="cancel">Cancel</a>
+        
+      </form>
+    </div>
+
+    <div class="column-third">
+      <div class="payment-summary js-stick-at-top-when-scrolling">
+
+        <h2 class="heading-small collapse-top">Payment summary</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <td colspan="2">
+                Title number AZ679451<br><br>
+                14a Mandela Way<br>
+                Southampton<br>
+                SO15 5RZ
+              </td>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <td style="vertical-align: top;">Total to pay:</td>
+              <td class="numeric"><span class="bold-large">£1.00</span></td>
+            </tr>
+          </tfoot>
+          <tbody>
+            <tr>
+              <td>Summary of Title Register</td>
+              <td class="numeric">£1.00</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+
+</main>
+
+{{/content}}
+
+{{$bodyEnd}}
+  {{>includes/scripts}}
+  <script type="text/javascript" src="/public/javascripts/jquery-1.11.2.js"></script>
+  <script type="text/javascript" src="/public/javascripts/stick-at-top-when-scrolling.js"></script>
+  <script type="text/javascript" src="/public/javascripts/stop-scrolling-at-footer.js"></script>
+  <script type="text/javascript">
+    $(function() {
+
+      // stop the position:fixed subnav rolling into footer
+      GOVUK.stopScrollingAtFooter.addEl($('.js-stick-at-top-when-scrolling'), $('.js-stick-at-top-when-scrolling').height());
+
+    });
+  </script>
+{{/bodyEnd}}
+
+{{/govuk_template}}

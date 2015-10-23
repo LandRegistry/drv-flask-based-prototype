@@ -1,0 +1,79 @@
+{{<govuk_template}}
+
+{{$pageTitle}}
+  Purchase Confirmation
+{{/pageTitle}}
+
+{{$head}}
+  {{>includes/head}}
+  <link href="/public/vendor/leaflet/leaflet.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="/public/stylesheets/alphagov-static.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="/public/stylesheets/land-registry-elements.css" media="screen" rel="stylesheet" type="text/css" />
+
+  <style type="text/css">
+  .payment-summary {
+    padding: 15px;
+    border: 8px solid #DEE0E2;
+  }
+  </style>
+{{/head}}
+
+{{$content}}
+
+<main id="content" role="main">
+
+  {{>digital-register/includes/banner}}
+<div class="column-full">
+  <h1 class="heading-xlarge">Check your details</h1>
+    <p class="lede">Please check your details before purchasing</p>
+  
+  <dl class="definition-tabular">
+    <dt>Card number</dt>
+      <dd><b>**** **** **** 0986</b></dd>
+    
+    <dt>Expiry date</dt>
+      <dd><b>02/18</b></dd>
+    
+    <dt>Name on card</dt>
+      <dd><b>Darcy Bloggs</b></dd>
+    
+    <dt>Billing address</dt>
+      <dd><b>10 King Road, Ipswich</b></dd>
+    
+    <dt>Email address</dt>
+      <dd><b>darcy.bloggs@gmail.com</b></dd>    
+    
+    <dt>Payment of</dt>
+      <dd><b>Summary of Title Register</b></dd>
+    
+    <dt>Amount to pay</dt>
+      <dd><b>&pound;1.00</b></dd>      
+  
+  </dl>
+  
+  </br>
+  <a href="payment-processing" class="button">Confirm payment</a>
+  </br>
+  <a href="title-summary" id="cancel">Cancel</a>
+</div>
+
+</main>
+
+{{/content}}
+
+{{$bodyEnd}}
+  {{>includes/scripts}}
+  <script type="text/javascript" src="/public/javascripts/jquery-1.11.2.js"></script>
+  <script type="text/javascript" src="/public/javascripts/stick-at-top-when-scrolling.js"></script>
+  <script type="text/javascript" src="/public/javascripts/stop-scrolling-at-footer.js"></script>
+  <script type="text/javascript">
+    $(function() {
+
+      // stop the position:fixed subnav rolling into footer
+      GOVUK.stopScrollingAtFooter.addEl($('.js-stick-at-top-when-scrolling'), $('.js-stick-at-top-when-scrolling').height());
+
+    });
+  </script>
+{{/bodyEnd}}
+
+{{/govuk_template}}
