@@ -55,7 +55,8 @@ def payment_processing():
 @app.route('/payment_successful', methods=['POST'])
 def payment_successful():
     title_number = request.args.get('title_number')
-    email = session['card_details']['email']
+    #email = session['card_details']['email']
+    email = "darcy.bloggs@gmail.com"
     search_term = request.args.get('search_term')
     return render_template(
         'payment_successful.html',
