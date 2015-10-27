@@ -16,9 +16,9 @@
 </main>
 
   <script type="text/javascript">
-  //var timeoutID = window.setTimeout(move, 1500);
-  //function move() {
-  //  window.location.href = '{{ url_for('payment_details', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string) }}';
-  //}
+  var timeoutID = window.setTimeout(move, 1500);
+  function move() {
+    window.location.href = '{{ url_for('payment_details', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string) }}';
+  }
   </script>
   {% endblock %}
