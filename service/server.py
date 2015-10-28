@@ -11,6 +11,34 @@ POSTCODE_REGEX = re.compile(address_utils.BASIC_POSTCODE_REGEX)
 
 USERNAME = 'Darcy Bloggs'
 
+@app.route('/titles/<title_number>/choose_summary_or_documents_2', methods=['GET'])
+def choose_summary_or_documents_2(title_number):
+    title = _get_register_title(title_number)
+
+    if title:
+        display_page_number = int(request.args.get('page') or 1)
+        search_term = request.args.get('search_term', title_number)
+        products_string = request.args.get('products') or ''
+
+        breadcrumbs = [
+            {'text': 'Search the land and property register', 'url': url_for('find_titles')},
+            {'text': 'Search results', 'url': url_for('find_titles_page', search_term=search_term, page=display_page_number)},
+        ]
+
+        return render_template(
+            'choose_summary_or_documents_2.html',
+            title=title,
+            username=USERNAME,
+            search_term=search_term,
+            display_page_number=display_page_number,
+            products_string=products_string,
+            breadcrumbs=breadcrumbs,
+            is_caution_title=title_utils.is_caution_title(title),
+        )
+    else:
+        abort(404)
+
+
 @app.route('/worldpay_1', methods=['POST'])
 def worldpay_1():
     title_number = request.args.get('title_number')
