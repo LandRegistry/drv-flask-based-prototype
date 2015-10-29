@@ -56,12 +56,15 @@
       <div class="column-quarter column-flip">
         <div class="account">
 
-          {#
-          {%% if username %}
+          {#% if username %}
             <a href="{{ url_for('sign_out') }}" id="signout">Sign out</a>
-          {% endif %}
-          #}
-          
+          {% else %}
+
+          <a href="{{ url_for('sign_in') }}" id="signin">Sign In</a>
+
+          {% endif %#}
+
+
         </div>
       </div>
     </div>

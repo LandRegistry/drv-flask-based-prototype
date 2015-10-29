@@ -16,8 +16,8 @@
     {% if title.address_lines %}
 
     <!-- 1. Start Title information (number, address and tenure information) -->
-    <h1 class="heading-large">View property details</h1>
-    <p class="lede">You can get a summary of the information Land Registry has about this property for &pound;1.20</p>
+    <h1 class="heading-large">Get a summary of the {{ title.tenure }} title for {{ title.address_lines[0] }}</h1>
+    <p class="lede">The summary is a cut-down version of the information Land Registry holds. It costs &pound;1.20.</p>
     <div class="text">
       <h2 itemscope itemtype="http://schema.org/PostalAddress" class="heading-medium collapse-bottom">
         <span itemprop="streetAddress">
@@ -32,39 +32,41 @@
         <dt>Title Number</dt>
         <dd><b>{{ title.number }}</b></dd>
         <dt>Tenure Type</dt>
-        <dd><b>{{ title.tenure }}</b></dd>
+        <dd><b>{{ title.tenure }}</b> – you may also need the <a href="http://drv-proto-v13.herokuapp.com/title-search/SO15%205RZ?title_number=&amp;products=&amp;page=1">freehold title</a></dd>
       </dl>
     </div>
-<div class="text">
-  <h2 class="heading-medium">What you'll get</h2>
-  <p>The summary will tell you</p>
-  <ul class="list-bullet">
-    <li>owner's name and address</li>
-    <li>what they paid for the property, if they bought it after April 2000</li>
-    <li>if there is a mortgage on the property, the lender's name and  address</li>
-    <li>if it's a leasehold property, how long the lease is for</li>
-    <li>the rough extent and location of the property</li>
-  </ul>
-  <p>You'll be able to view the information on screen. <b>You'll only be able to view it once.</b> If you want to keep a copy, you'll need to print it out or take a screen shot.</p>
+    <div class="text">
+      <h2 class="heading-medium">What you'll get</h2>
+      <p>The summary will tell you</p>
+      <ul class="list-bullet">
+        <li>owner's name and address</li>
+        <li>what they paid for the property – if they bought it after April 2000 and paid full market price for it</li>
+        <li>if there is a mortgage on the property, the lender's name and  address</li>
+        <li>if it's a leasehold property, how long the lease is for</li>
+        <li>the rough extent and location of the property</li>
+      </ul>
+      <div class="panel-indent panel-indent-info">
+      <p>You'll be able to view the information on screen. <b>You'll only be able to view it once.</b> If you want to keep a copy, you'll need to print it out or take a screen shot.</p>
+    </div>
 
-  <h2 class="heading-medium">You won't get</h2>
-  <p>You'll need to use a <a target="_blank" href="https://www.gov.uk/get-information-about-property-and-land">different Land Registry service</a> if you need</p>
-  <ul>
-    <li>the full legal register entry</li>
-    <li>details of access rights, rights of way, and restrictions</li>
-    <li>to prove who owns a property, for example in a court case or for a visa application</li>
-    <li>the official title plan showing indicative boundaries</li>
-    <li>a copy of the deeds</li>
-    <li>details of previous owners</li>
-  </ul>
-</div>
+      <h2 class="heading-medium">You won't get</h2>
+      <p>You'll need to <a target="_blank" href="https://www.gov.uk/get-information-about-property-and-land">use a different Land Registry service</a> if you need more detailed information like</p>
+      <ul>
+        <li>the full legal register entry</li>
+        <li>details of access rights, rights of way, and restrictions</li>
+        <li>to prove who owns a property, for example in a court case or for a visa application</li>
+        <li>the official title plan showing indicative boundaries</li>
+        <li>a copy of the deeds</li>
+        <li>details of previous owners</li>
+      </ul>
+    </div>
 
 <h2 class="heading-medium">You will need</h2><ul>
   <li> a credit or debit card</li>
   <li> a printer, if you want to print the summary to refer to later</li>
 </ul>
 
-<p class="collapse-bottom"><a href="{{ url_for('signin_page', title_number=title.number, search_term=search_term, page=display_page_number) }}" class="button">Buy property summary</a></p>
+<p class="collapse-bottom"><a href="{{ url_for('signin_page', title_number=title.number, search_term=search_term, page=display_page_number) }}" class="button">Buy title summary</a></p>
 <p>for <b>&pound;1.20</b> <small>(incl. VAT)</small></p>
 
 
