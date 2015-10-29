@@ -10,6 +10,12 @@
   {% assets "styleguide_ie6" %}<!--[if IE 6]><link href="{{ ASSET_URL }}" media="screen" rel="stylesheet" type="text/css" /><![endif]-->{% endassets %}
   {% assets "print" %}<link href="{{ ASSET_URL }}" media="print" rel="stylesheet" type="text/css" />{% endassets %}
   {% assets "beta" %}<link href="{{ ASSET_URL }}" media="screen" rel="stylesheet" type="text/css" />{% endassets %}
+  <style>
+  #map{
+    height:320px !important;
+    width:320px !important;
+  }
+  </style>
   <!-- Google Analytics -->
   <script type="text/javascript">
     var googleAnalyticsApiKey = '{{ google_api_key }}';

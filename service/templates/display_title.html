@@ -8,18 +8,15 @@
   <h1 class="heading-large">Summary of the {{ title.tenure }} title for {{ title.address_lines[0] }}</h1>
   <p class="expand-bottom">This title was last changed on <b>{{ title.last_changed | date }}</b> at <b>{{ title.last_changed | time }}</b></p>
   <div class="panel-indent">
-    <p class="font-small"><b>This is a one-time view of this information</b><br/>If you want to keep a copy, you'll need to print it out or take a screen shot</p>
+      <p><b>This is a one-time view of this information</b><br>
+        If you want to keep a copy, you'll need to print it out or take a screen shot.</p>
     <div class="button-print">
       <a href="javascript:window.print();">Print this page</a>
     </div>
   </div>
 
-
   <div class="grid-row">
     <div class="column-two-thirds">
-
-
-
       <h2 class="heading-medium collapse-top">
         {% if title.address_lines %}
           {{ '<br>'.join(title.address_lines)|safe }}
@@ -90,7 +87,6 @@
         </div>
       </div>
       <p class="font-xsmall">This map shows the property's rough extent and location. <b>It doesn't show exact boundries.</b></p>
-
     </div>
 
 </div>
@@ -108,7 +104,7 @@
       <div class="text printhidden">
         <h6 class="heading-medium">What next</h6>
         <ul>
-          <li><a href="">Search for another title using this service</a></li>
+          <li><a href="{{ url_for('find_titles') }}">Search for another title using this service</a></li>
           <li><a href="https://gov.uk">Return to GOV.UK</a></li>
         </ul>
       </div>
