@@ -71,7 +71,9 @@ window.onload = function() {
     var bounds = indexGeoJson.getBounds();
 
     map.fitBounds(bounds, {maxZoom: 18, animate: false});
+
   } else {
     document.getElementById('map').innerHTML = '<div class="panel-simple">No map information available</div>';
+
   }
 };

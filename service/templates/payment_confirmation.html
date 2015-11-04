@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<main id="content" role="main">
+	<div class="grid-row">
+
+		<div class="column-half">
+			<h1 class="heading-large">Check your details are correct before confirming</h1>
+		</div>
+		<div class="column-two-thirds">
+			<table class="payment_confirmation">
+			  <tr>
+			    <th>Card number:</th>
+			    <th>Expiry date:</th>
+			    <th>Name on card:</th>
+					<th>Billing address:</th>
+					<th>Email address:</th>
+					<th>Payment of:</th>
+					<th>Amount to pay:</th>
+			  </tr>
+			  <tr>
+			    <td>{{ formatted_card_number }}</td>
+			    <td>{{ card_details['expiry_month'] }}/{{ card_details['expiry_year'] }}</td>
+					<td>{{ card_details['full_name'] }}</td>
+					<td>{{ billing_address }}</td>
+					<td>{{ card_details['email'] }}</td>
+					<td>Summary of Title Register</td>
+					<td>&pound;1.20 (incl.VAT)</td>
+			  </tr>
+			</table>
+			</br>
+			<a href="{{ url_for('payment_successful', title_number=title_number, search_term=search_term, page=display_page_number) }}" class="button">Confirm payment</a>
+			</br>
+			<a href="{{ url_for('find_titles_page', title_number=title_number, search_term=search_term, page=display_page_number) }}" id="cancel">Cancel</a>
+		</div>
+	</div>
+</div>
+{% endblock %}

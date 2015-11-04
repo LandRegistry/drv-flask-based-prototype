@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  <div class="outer-block">
+    <div class="inner-block">
+      <h1 class="heading-large">Account created</h1>
+      <p>Thank you for registering. You will need your email address and password to sign-in in the future.</p>
+      <div>
+        <a href="{{ url_for('payment_details', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string) }}" class="button">Continue</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

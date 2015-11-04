@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+
+{% from "_formhelpers.html" import render_field, render_group_field %}
+
+{% block body %}
+  <div class="grid-row">
+
+    <div class="column-two-thirds">
+      <h1 class="heading-large">Pay by credit card</h1>
+
+      {% if form.errors %}
+        <h2 class="heading-medium error-summary-heading">
+          There was a problem submitting the form
+        </h2>
+      {% endif %}
+      <form action="{{ url_for('payment_details', title_number=title.number, search_term=search_term, page=display_page_number, products=products_string) }}" method="post">
+        <dl>
+          {{ render_field(form.full_name) }}
+          {{ render_field(form.card_number) }}
+          {{ render_group_field(form.card_security_code, size="10") }}
+          <h3 class="heading-small">Expiry date</h3>
+          <div class="form-hint">
+            For example, 07/17
+          </div>
+          {{ render_group_field(form.expiry_month, size="5")  }}
+          {{ render_group_field(form.expiry_year, size="5")  }}
+          <p>
+            {{ render_field(form.building_and_street_1, size="40") }}
+            {{ render_field(form.building_and_street_2, size="40") }}
+            {{ render_field(form.town, size="30") }}
+            {{ render_field(form.county, size="30") }}
+            {{ render_field(form.postcode) }}
+            {{ render_field(form.email, size="40") }}
+          </p>
+        </dl>
+        <input type="submit" value="Continue" class="button">
+      </form>
+      <a href="{{ url_for('find_titles_page', title_number=title.number, search_term=search_term, page=display_page_number) }}" id="cancel">Cancel</a>
+    </div>
+
+    <div class="column-third">
+      <div class="panel-simple">
+        <div>
+          <p>
+            <strong>Payment summary</strong>
+          </p>
+        </div>
+        <div>
+          <p>
+            Title number<br/>
+            {{ title.number }}
+          </p>
+        </div>
+        <div>
+          <p>{{ '<br>'.join(title.address_lines)|safe }}</p>
+        </div>
+        {% if not is_caution_title %}
+          <div>
+            <p>{{ title.tenure }}</p>
+          </div>
+        {% endif %}
+        <table class="payment_confirmation">
+          <tr>
+            <th style="font-size: 23px">Total to pay</th>
+          </tr>
+          <tr>
+            <td style="font-size: 23px"><strong>£1.00</strong></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+  </div>
+{% endblock %}

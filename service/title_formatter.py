@@ -9,6 +9,7 @@ def format_display_json(title_json):
     title_data = title_json['data']
     address_lines = address_utils.get_address_lines(title_data['address'])
     indexPolygon = _get_property_address_index_polygon(title_json['geometry_data'])
+
     title = {
         'number': title_json['title_number'],
         'last_changed': title_data.get('last_application_timestamp', 'No data'),
@@ -17,8 +18,6 @@ def format_display_json(title_json):
         'tenure': title_data.get('tenure', 'No data'),
         'indexPolygon': indexPolygon,
         'is_caution_title': title_utils.is_caution_title(title_data),
-        'edition_date': title_data.get('edition_date'),
-        'class_of_title': title_data.get('class_of_title'),
     }
 
     if 'lenders' in title_data:
@@ -93,7 +92,7 @@ def _get_property_address_index_polygon(geometry_data):
 
 
 def _format_private_individual_name(name):
-    name_list = [name[field] for field in ['title', 'forename', 'surname'] if field in name]
+    name_list = [name[field] for field in ['forename', 'surname'] if field in name]
 
     formatted_name = ' '.join(name_list)
     decoration = name.get('decoration')

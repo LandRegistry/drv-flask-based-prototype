@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
-  <div class="inner-block">
+  <div class="text">
 
     <h1 class="heading-large">Digital Register Login</h1>
 
@@ -10,8 +10,8 @@
         {{ service_notice_html | safe }}
       </div>
     {% endif %}
-
-    <form action="{{ url_for('sign_in', title_number=title_number, search_term=search_term, page=display_page_number) }}" method="post" class="form">
+    <p>To use this service you will require your current Find a Property user account. To create one,  please <a target="_blank" href="https://eservices.landregistry.gov.uk/www/wps/portal/RegisterForLRO">follow this link</a>
+    <form action="{{ url_for('worldpay_1', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string) }}" method="post" class="form">
       {{ form.hidden_tag() }}
       {% if form.errors %}
         <div class="error-summary" role="group" aria-labelledby="error-summary-heading-example-1" tabindex="-1">
@@ -47,6 +47,7 @@
           {% endfor %}
         {% endif %}
         <input type="text" class="form-control" id="username" name="username" required pattern=".{4,70}" title="Username must contain at least 4 and at most 70 characters" autofocus="autofocus">
+
       </div>
 
       <div class="form-group{% if form.password.errors %} error{% endif %}">
@@ -60,11 +61,15 @@
         {% endif %}
         <input type="password" class="form-control" id="password" name="password" required>
       </div>
+      <!--p><a target="_blank" href="https://eservices.landregistry.gov.uk/www/wps/myportal/Property_Search">I’ve forgotten my password</a></p-->
+
 
       <div class="form-group">
         <button type="submit" class="button" id="signin">Sign In</button>
       </div>
-
+      <!--div class="panel-indent">
+        <p>To use this service, you will need a current Property Search User account. If you don't have one, you need to <a target="_blank" href="https://eservices.landregistry.gov.uk/www/wps/portal/RegisterForLRO">create an account</a></p>
+      </div-->
     </form>
   </div>
 {% endblock %}

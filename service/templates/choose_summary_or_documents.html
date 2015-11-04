@@ -1,0 +1,94 @@
+{% extends "imports.html" %}
+
+{% block body %}
+{% if is_caution_title %}
+<span class="alert-flag-hi-viz">Caution against first registration</span>
+<br>
+{% endif %}
+
+<!-- Open a Grid Row -->
+<div class="grid-row">
+  <!-- Limit width to two-thirds -->
+  <div class="column-two-thirds">
+
+    {# Check if Title has any Data #}
+
+    {% if title.address_lines %}
+
+    <!-- 1. Start Title information (number, address and tenure information) -->
+    <h1 class="heading-large">Get a summary of the {{ title.tenure }} title for {{ title.address_lines[0] }}</h1>
+    <p class="lede">The summary is a cut-down version of the information Land Registry holds. It costs &pound;1.20. <a target="_blank" href="https://www.gov.uk/get-information-about-property-and-land">Use a different service</a> if you need full information for this title.</p>
+    <details>
+      <summary>
+        What you'll get in the cut-down version
+      </summary>
+        <h2 class="heading-medium">What you'll get</h2>
+        <p>The summary can tell you</p>
+        <ul class="list-bullet">
+          <li>owner's name and address</li>
+          <li>what they paid for the property – you won’t get this if it was bought before April 2000, if no money changed hands, or if the owner didn’t buy it outright</li>
+          <li>if there is a mortgage on the property, the lender's name and  address</li>
+          <li>if it's a leasehold property, how long the lease is for</li>
+          <li>the rough extent and location of the property</li>
+        </ul>
+
+        <div class="panel-indent panel-indent-info">
+          <p>You'll be able to view the information on screen. <b>You'll only be able to view it once.</b> If you want to keep a copy, you'll need to print it out or take a screen shot.</p>
+        </div>
+
+        <h2 class="heading-medium">You won't get</h2>
+        <p>You'll need to <a target="_blank" href="https://www.gov.uk/get-information-about-property-and-land">use a different Land Registry service</a> if you need more detailed information like</p>
+        <ul>
+          <li>the full legal register entry</li>
+          <li>details of access rights, rights of way, and restrictions</li>
+          <li>to prove who owns a property, for example in a court case or for a visa application</li>
+          <li>the official title plan showing indicative boundaries</li>
+          <li>a copy of the deeds</li>
+          <li>details of previous owners</li>
+        </ul>
+    </details>
+
+    <div class="text collapse-top">
+      <h2 itemscope itemtype="http://schema.org/PostalAddress" class="heading-medium collapse-bottom">
+        <span itemprop="streetAddress">
+          <b>{{ title.address_lines[0] }}</b><br>
+        </span>
+        <span itemprop="addressLocality"><b>{{ title.address_lines[1] }}</b></span><br>
+        <span itemprop="postalCode"><b>{{ title.address_lines[2] }}</b></span>
+      </h2>
+      <br/>
+      <dl class="definition-tabular">
+        <dt>Title Number</dt>
+        <dd><b>{{ title.number }}</b></dd>
+        <dt>Tenure Type</dt>
+        <dd><b>{{ title.tenure }}</b> – you may also need the <a href="{{ url_for('find_titles', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string) }}">freehold title</a></dd>
+      </dl>
+    </div>
+
+    <p class="collapse-bottom"><a href="{{ url_for('signin_page', title_number=title.number, search_term=search_term, page=display_page_number) }}" class="button">Buy title summary</a></p>
+    <p>for <b>&pound;1.20</b> <small>(incl. VAT)</small></p>
+
+    <h2 class="heading-medium">You will need</h2><ul>
+      <li> a credit or debit card</li>
+      <li> a printer, if you want to print the summary to refer to later</li>
+    </ul>
+
+
+  </div>
+</div>
+
+{# I Title has no Data #}
+
+{% else %}
+<div class="text">Sorry, there is no recorded address for this title</div>
+{% endif %}
+
+<br/>
+
+<!-- Offer user a link back to the Search Results -->
+<a href="{{ url_for('find_titles', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string) }}">Back to search results</a>
+
+</div>
+<!--script src="/static/javascripts/map.js"></script-->
+
+{% endblock %}

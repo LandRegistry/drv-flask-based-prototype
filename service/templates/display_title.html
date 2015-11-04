@@ -1,32 +1,33 @@
-{% extends "imports.html" %}
+{% extends "layout.html" %}
 
 {% block body %}
   {% if is_caution_title %}
     <span class="alert-flag-hi-viz">Caution against first registration</span>
     <br>
   {% endif %}
-  <h1 class="heading-xlarge collapse-bottom">Summary of {% if is_caution_title %}caution {% endif %}title {{ title.number }}</h1>
+  <h1 class="heading-large">Summary of the {{ title.tenure }} title for {{ title.address_lines[0] }}</h1>
   <p class="expand-bottom">This title was last changed on <b>{{ title.last_changed | date }}</b> at <b>{{ title.last_changed | time }}</b></p>
+  <div class="panel-indent">
+      <p><b>This is a one-time view of this information</b><br>
+        If you want to keep a copy, you'll need to print it out or take a screen shot.</p>
+    <div class="button-print">
+      <a href="javascript:window.print();">Print this page</a>
+    </div>
+  </div>
 
   <div class="grid-row">
-
     <div class="column-two-thirds">
-
-      <p class="lede collapse-top">
+      <h2 class="heading-medium collapse-top">
         {% if title.address_lines %}
           {{ '<br>'.join(title.address_lines)|safe }}
         {% else %}
           Not Available
         {% endif %}
-      </p>
-
-      <div id="map">
-        <div class="panel-simple">
-          <p>The map relies on JavaScript being enabled in your browser.</p>
-        </div>
-      </div>
+      </h2>
 
       <dl class="definition-tabular expand-top-half">
+        <dt>Title number</dt>
+        <dd><b>{{title.number}}</b></dd>
         <dt>{% if is_caution_title %}Cautioner{% else %}Owner{% endif %}{{ title.proprietors|length|pluralize }}</dt>
         <dd>
           {% for proprietor in title.proprietors %}
@@ -69,59 +70,57 @@
           <dd><b>{{ title.tenure }}</b></dd>
         {% endif %}
 
+        <dt>Lease term</dt>
+        <dd><b>99 years</b> from 3 October 2012</dd>
+
         {% if title.ppi_data %}
-          <dt>Price paid/stated</dt>
+          <dt>Price paid</dt>
           <dd><b>{{ title.ppi_data }}</b></dd>
         {% endif %}
       </dl>
 
     </div>
-
     <div class="column-third">
-
-      <div class="printhidden panel-simple">
-        <span class="print-page"></span>
-      </div>
-
-      {% if show_pdf %}
-        <div class="download-documents js-stick-at-top-when-scrolling">
-          <div class="document-item">
-            <a href="{{ url_for('display_title_pdf', title_number=title.number) }}" class="image">
-              <img src="/static/images/icon-register-document.png">
-            </a>
-            <span class="title">{% if is_caution_title %}Caution title register{% else %}Title register{% endif %}</span><br>
-            <span class="footnote">{% if is_caution_title %}Caution title {% endif %}PDF document</span>
-            <p>
-              <a class="button" id="download-link" style="vertical-align: baseline;" href="{{ url_for('display_title_pdf', title_number=title.number) }}" target="_blank"><b>Download</b></a>
-            </p>
-          </div>
+      <div id="map">
+        <div class="panel-simple">
+          <p>The map relies on JavaScript being enabled in your browser.</p>
         </div>
-      {% endif %}
-
+      </div>
+      <p class="font-xsmall">This map shows the property's rough extent and location. <b>It doesn't show exact boundaries.</b></p>
     </div>
-  </div>
 
-  {% if full_title_data %}
-    <div class="service-notice expand-bottom">
-      {% include 'display_full_title_details.html' %}
-    </div>
-  {% endif %}
+</div>
+
+
+
 
   <div class="grid-row">
-    <div class="column-two-thirds">
+      <div class="text legal-division--top font-xsmall">
+        <div class="panel-indent">
+          <p>If you have any problems with your purchase, you can call Land Registry on <b>0300 006 0411</b>.</p>
+          <p>For more contact methods, visit <a href="https://www.gov.uk/government/organisations/land-registry">www.gov.uk/government/organisations/land-registry</a></p>
+        </div>
+      </div>
       <div class="text printhidden">
         <h6 class="heading-medium">What next</h6>
         <ul>
-          <li><a href="/title-search">Search for another title using this service</a></li>
+          <li><a href="{{ url_for('find_titles') }}">Search for another title using this service</a></li>
           <li><a href="https://gov.uk">Return to GOV.UK</a></li>
         </ul>
       </div>
-    </div>
+    </dv>
   </div>
 
 {% endblock %}
 
 {% block js_bottom %}
+  <script type='text/javascript'>
+    $(function() {
+      // stop the position:fixed subnav rolling into footer
+      GOVUK.stickAtTopWhenScrolling.init();
+      GOVUK.stopScrollingAtFooter.addEl($('.js-stick-at-top-when-scrolling'), $('.js-stick-at-top-when-scrolling').height());
+    });
+  </script>
   <script type='text/javascript'>
     var indexData = {{ title.indexPolygon | tojson }}
   </script>
@@ -133,4 +132,10 @@
     });
   </script>
   <script src="/static/javascripts/map.js"></script>
-{% endblock %}
+  <link rel="stylesheet" href="/static/vendor/leaflet-0.7.3/leaflet.css" />
+  <script src="/static/vendor/leaflet-0.7.3/leaflet.js"></script><!-- Leaflet -->
+  <script src="/static/javascripts/proj4.js"></script><!-- proj4js -->
+  <script src="/static/javascripts/proj4leaflet.js"></script><!-- proj4leaflet -->
+
+
+  {% endblock %}

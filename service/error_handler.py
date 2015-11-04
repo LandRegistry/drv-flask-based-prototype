@@ -22,6 +22,6 @@ def setup_errors(app, error_template="error.html"):
         return render_template(error_template, error=error_title, code=code, description=Markup(description),
                                breadcrumbs=breadcrumbs), code
 
-    for exception in default_exceptions:
-        app.register_error_handler(exception, error_handler)
-    app.register_error_handler(Exception, error_handler)
+    #for exception in default_exceptions:
+    #    app.register_error_handler(exception, error_handler)
+    #    app.register_error_handler(Exception, error_handler)

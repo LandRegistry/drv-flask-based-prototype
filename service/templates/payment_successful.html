@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  <div class="inner-block">
+    <div class='payment-successful'>
+      <h3>&#10004;&nbsp;Your payment has been successful</h3>
+      <h4>Reference number:</h4>
+      <h3>43236WPGV</h3>
+    </div>
+    <h1 class="heading-large">What happens next</h1>
+
+    <span>We will email you a receipt shortly to <b>{{ email }}</b></span><br>
+
+    <h1 class="heading-medium">Payment summary</h1>
+
+    <div width="100%; display:table; margin-bottom:40px;">
+      <div style="display:table-row;">
+        <div style="width:40%;display:table-cell; padding-bottom:10px;">Payment of:</div><div style="display:table-cell;padding-bottom:10px;"><b>Register Summary</b></div>
+      </div>
+      <div style="display:table-row;">
+        <div style="width:40%;display:table-cell; padding-bottom:10px;">Payment of:</div><div style="display:table-cell;padding-bottom:10px;"><b>&pound;1.20 (incl.VAT)</b></div>
+      </div>
+    </div>
+    <br><br>
+    <a href="{{ url_for('get_title', title_number=title_number, search_term=search_term, page=display_page_number) }}" class="button">Next</a>
+{{ title }}
+    {% if service_notice_html %}
+      <div class="service-notice expand-bottom">
+        {{ service_notice_html | safe }}
+      </div>
+    {% endif %}
+
+  </div>
+{% endblock %}

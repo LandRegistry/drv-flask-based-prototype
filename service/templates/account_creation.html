@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<main id="content" role="main">
+
+  <h1 class="heading-large">Create an account</h1>
+
+  <div class="text">
+
+    <form class="form" action="{{ url_for('create_account', title_number=title_number, search_term=search_term, page=display_page_number, products=products_string) }}" method="post">
+
+      <div class="form-group">
+        <label class="form-label-bold" for="email-address">Email address</label>
+        <input class="form-control" type="email" id="email-address" name="email" required>
+      </div><!-- form-group -->
+
+      <div class="form-group">
+        <label class="form-label-bold" for="password">
+          Create a password
+          <span class="form-hint">Your password must have at least six characters.</span>
+        </label>
+        <input class="form-control" type="password" id="password" minlength="6" required>
+        <p><a href="#" id="passwordToggle">Show typing</a></p>
+      </div><!-- form-group -->
+
+      <button class="button">Continue</button>
+    </form>
+
+  </div>
+</main>
+
+{% endblock %}
+
+{% block js_bottom %}
+  <script type="text/javascript" src="/public/javascripts/jquery-1.11.2.js"></script>
+  <script type="text/javascript">
+    var $link = $('#passwordToggle');
+    var $el = $('#password');
+    $link.on('click', function(e) {
+      e.preventDefault();
+      if ($el.attr('type') == 'password') {
+        $el.attr('type', 'text');
+        $link.text('Hide typing');
+      } else {
+        $el.attr('type', 'password');
+        $link.text('Show typing');
+      }
+    });
+  </script>
+{% endblock %}
